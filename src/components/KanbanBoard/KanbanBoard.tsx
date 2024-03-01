@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { Column, Id, Task } from "../types";
+import { Column, Id, Task } from "../../types";
 import ColumnContainer from "./ColumnContainer";
-import { initialColumnData, initialTaskData } from "../initialData";
+import { initialColumnData, initialTaskData } from "../../initialData";
 import {
   DndContext,
   DragEndEvent,
@@ -15,8 +15,8 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { columnColors } from "../columnColors";
-import { generateId } from "../utils/generateId";
+import { columnColors } from "../../columnColors";
+import { generateId } from "../../utils/generateId";
 import TaskModal from "./TaskModal";
 
 interface Props {

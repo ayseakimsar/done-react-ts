@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Column, Id, Task } from "../types";
-import TrashIcon from "../icons/TrashIcon";
-import CircleIcon from "../icons/CircleIcon";
-import PlusIcon from "../icons/PlusIcon";
+import { Column, Id, Task } from "../../types";
+import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
+import CircleIcon from "../../icons/KanbanBoard/CircleIcon";
+import PlusIcon from "../../icons/KanbanBoard/PlusIcon";
 import TaskCard from "./TaskCard";
 
 interface Props {

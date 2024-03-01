@@ -1,8 +1,8 @@
-import { useState } from "react";
 import "./App.css";
-import KanbanBoard from "./components/KanbanBoard";
-import SecondarySidebar from "./components/SecondarySidebar";
+import { useState } from "react";
 import { Id } from "./types";
+import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
+import SecondarySidebar from "./components/SecondarySidebar/SecondarySidebar";
 
 function App() {
   const [activeProjectId, setActiveProjectId] = useState<Id | null>(null);

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Id, Task } from "../types";
-import TrashIcon from "../icons/TrashIcon";
-import Checkbox from "../icons/Checkbox";
-import CheckboxDone from "../icons/CheckboxDone";
+import { Id, Task } from "../../types";
+import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
+import Checkbox from "../../icons/KanbanBoard/Checkbox";
+import CheckboxDone from "../../icons/KanbanBoard/CheckboxDone";
 interface Props {
   task: Task;
   deleteTask: (taskId: Id) => void;
