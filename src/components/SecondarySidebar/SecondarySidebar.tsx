@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Id, Project } from "../../types";
 import { initialProjectData } from "../../initialData";
 import { generateId } from "../../utils/generateId";
-import ProjectIcon from "../../icons/SecondarySidebar/ProjectIcon";
 import InboxIcon from "../../icons/SecondarySidebar/InboxIcon";
 import TodayIcon from "../../icons/SecondarySidebar/TodayIcon";
 import UpcomingIcon from "../../icons/SecondarySidebar/UpcomingIcon";
 import SidebarMainFilter from "./SidebarMainFilter";
+import SidebarProjectFilter from "./SidebarProjectFilter";
+import CreateNewProjectButton from "./CreateNewProjectButton";
 
 interface Props {
   handleProjectSelection: (projectId: Id) => void;
@@ -60,23 +61,14 @@ export default function SecondarySidebar({ handleProjectSelection }: Props) {
         </div>
         <div className="flex flex-col gap-5">
           {projects.map((project) => (
-            <button
+            <SidebarProjectFilter
               key={project.id}
-              onClick={() => handleProjectSelection(project.id)}
-            >
-              <div className="flex items-center gap-2 text-[0.83em] font-semibold tracking-wide text-light-primaryTextLight">
-                <ProjectIcon color="#6c7787" />
-                <div>{project.title}</div>
-              </div>
-            </button>
+              projectId={project.id}
+              projectTitle={project.title}
+              handleProjectSelection={handleProjectSelection}
+            />
           ))}
-          <button
-            className="flex items-center gap-3 text-light-brand text-[0.83em] font-semibold tracking-wide"
-            onClick={createNewProject}
-          >
-            <ProjectIcon color="#93C5FD" />
-            <span>+ New Project</span>
-          </button>
+          <CreateNewProjectButton createNewProject={createNewProject} />
         </div>
       </div>
       {/*Projects*/}
