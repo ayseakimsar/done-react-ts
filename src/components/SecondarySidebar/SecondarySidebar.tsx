@@ -1,7 +1,4 @@
-import { useState } from "react";
-import { Id, Project } from "../../types";
-import { initialProjectData } from "../../initialData";
-import { generateId } from "../../utils/generateId";
+import { Project } from "../../types";
 import InboxIcon from "../../icons/SecondarySidebar/InboxIcon";
 import TodayIcon from "../../icons/SecondarySidebar/TodayIcon";
 import UpcomingIcon from "../../icons/SecondarySidebar/UpcomingIcon";
@@ -10,24 +7,20 @@ import SidebarProjectFilter from "./SidebarProjectFilter";
 import CreateNewProjectButton from "./CreateNewProjectButton";
 
 interface Props {
-  handleProjectSelection: (projectId: Id) => void;
+  handleProjectSelection: (project: Project) => void;
+  createNewProject: () => void;
+  projects: Project[];
 }
 
-export default function SecondarySidebar({ handleProjectSelection }: Props) {
-  const [projects, setProjects] = useState<Project[]>(initialProjectData);
-
-  function createNewProject() {
-    const newProject = {
-      id: generateId(),
-      title: `Project ${projects.length + 1}`,
-    };
-    setProjects([...projects, newProject]);
-  }
-
+export default function SecondarySidebar({
+  handleProjectSelection,
+  createNewProject,
+  projects,
+}: Props) {
   return (
-    <div className="w-[220px] h-[100vh] bg-light-secondarySidebar p-8 flex flex-col gap-5">
-      {/*To dos*/}
-      <div>
+    <div className="border-r-[1px] border-gray-200 col-start-2 col-end-3  row-start-1 row-end-3  w-[200px] h-[100vh] bg-light-secondarySidebar p-8 flex flex-col gap-[5rem] pt-[3rem]">
+      {/*Main filters*/}
+      <div className="flex flex-col gap-4 ">
         <div className="text-[0.7em] font-light text-light-primaryTextLight uppercase tracking-[0.23em]">
           To Do
         </div>
@@ -35,24 +28,22 @@ export default function SecondarySidebar({ handleProjectSelection }: Props) {
           <SidebarMainFilter
             icon={<InboxIcon />}
             handleProjectSelection={handleProjectSelection}
-            filterName="inbox"
-            filterId={"inbox"}
+            project={projects.filter((project) => project.id === "inbox")[0]}
           />
           <SidebarMainFilter
             icon={<TodayIcon />}
             handleProjectSelection={handleProjectSelection}
-            filterName="today"
-            filterId={"today"}
+            project={projects.filter((project) => project.id === "today")[0]}
           />
 
           <SidebarMainFilter
             icon={<UpcomingIcon />}
             handleProjectSelection={handleProjectSelection}
-            filterName="upcoming"
-            filterId={"upcoming"}
+            project={projects.filter((project) => project.id === "upcoming")[0]}
           />
         </div>
       </div>
+      {/*Main filters*/}
 
       {/*Projects*/}
       <div className="flex flex-col gap-5 ">
@@ -60,18 +51,25 @@ export default function SecondarySidebar({ handleProjectSelection }: Props) {
           Projects
         </div>
         <div className="flex flex-col gap-5">
-          {projects.map((project) => (
-            <SidebarProjectFilter
-              key={project.id}
-              projectId={project.id}
-              projectTitle={project.title}
-              handleProjectSelection={handleProjectSelection}
-            />
-          ))}
+          {projects.map((project) => {
+            return (
+              project.type === "project" && (
+                <SidebarProjectFilter
+                  key={project.id}
+                  project={project}
+                  handleProjectSelection={handleProjectSelection}
+                />
+              )
+            );
+          })}
           <CreateNewProjectButton createNewProject={createNewProject} />
         </div>
       </div>
       {/*Projects*/}
+
+      {/*Filters*/}
+      <div></div>
+      {/*Filters*/}
     </div>
   );
 }

@@ -1,22 +1,20 @@
 import ProjectIcon from "../../icons/SecondarySidebar/ProjectIcon";
-import { Id } from "../../types";
+import { Project } from "../../types";
 
 interface Props {
-  projectId: Id;
-  projectTitle: string;
-  handleProjectSelection: (projectId: Id) => void;
+  project: Project;
+  handleProjectSelection: (project: Project) => void;
 }
 
 export default function SidebarProjectFilter({
-  projectId,
-  projectTitle,
+  project,
   handleProjectSelection,
 }: Props) {
   return (
-    <button onClick={() => handleProjectSelection(projectId)}>
+    <button onClick={() => handleProjectSelection(project)}>
       <div className="flex items-center gap-2 text-[0.83em] font-semibold tracking-wide text-light-primaryTextLight">
         <ProjectIcon color="#6c7787" />
-        <div>{projectTitle}</div>
+        <div>{project.title}</div>
       </div>
     </button>
   );

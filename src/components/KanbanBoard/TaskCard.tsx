@@ -5,18 +5,22 @@ import { Id, Task } from "../../types";
 import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
 import Checkbox from "../../icons/KanbanBoard/Checkbox";
 import CheckboxDone from "../../icons/KanbanBoard/CheckboxDone";
+
+import MoreIcon from "../../icons/KanbanBoard/MoreIcon";
+
 interface Props {
   task: Task;
+  subtasks: Task[];
   deleteTask: (taskId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
-  handleTaskClick: () => void;
+  onTaskClick: (task: Task) => void;
 }
 
 export default function TaskCard({
   task,
   deleteTask,
   updateTask,
-  handleTaskClick,
+  onTaskClick,
 }: Props) {
   const [mouseEntersCheckbox, setMouseEntersCheckbox] = useState(false);
   const [taskCompleted, setTaskCompleted] = useState(false);
@@ -73,14 +77,14 @@ export default function TaskCard({
   }
   return (
     <div
-      onClick={handleTaskClick}
+      onClick={() => onTaskClick(task)}
       onMouseEnter={handleMouseEntersTask}
       onMouseLeave={handleMouseLeavesTask}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
       style={style}
-      className="px-3 grid grid-rows-2 grid-cols-task gap-2 items-center min-h-[80px] h-[auto] w-[290px] bg-light-task dark:bg-dark-task drop-shadow-md dark:drop-shadow-2xl rounded-xl  text-light-primaryText dark:text-dark-primaryText"
+      className="px-3 grid grid-rows-2 grid-cols-task gap-2 items-center min-h-[80px] h-[auto] w-[290px] bg-light-task dark:bg-dark-task shadow-md dark:drop-shadow-2xl rounded-xl  text-light-primaryText dark:text-dark-primaryText"
     >
       <div
         onClick={() => handleTaskCompleted(task.id)}
@@ -93,7 +97,11 @@ export default function TaskCard({
           opacity: taskCompleted ? 0 : 1,
         }}
       >
-        {mouseEntersCheckbox ? <CheckboxDone /> : <Checkbox />}
+        {mouseEntersCheckbox ? (
+          <CheckboxDone />
+        ) : (
+          <Checkbox strokeWidth={1.2} viewBox={"0 0 27 27"} />
+        )}
       </div>
       <div className="pt-4 self-end font-semibold text-sm text-light-primaryText  dark:text-dark-primaryText h-[auto] ">
         {editMode ? (
@@ -119,6 +127,7 @@ export default function TaskCard({
         onClick={() => deleteTask(task.id)}
       >
         <TrashIcon />
+        <MoreIcon />
       </button>
     </div>
   );

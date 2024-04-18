@@ -1,26 +1,24 @@
 import { ReactNode } from "react";
-import { Id } from "../../types";
+import { Project } from "../../types";
 
 interface Props {
   icon: ReactNode;
-  handleProjectSelection: (filterId: Id) => void;
-  filterId: Id;
-  filterName: string;
+  handleProjectSelection: (project: Project) => void;
+  project: Project;
 }
 
 export default function SidebarMainFilter({
   icon,
-  filterId,
-  filterName,
+  project,
   handleProjectSelection,
 }: Props) {
   return (
     <button
-      className="flex items-center gap-2 text-[0.87em] font-semibold tracking-wide text-light-primaryTextLight capitalize"
-      onClick={() => handleProjectSelection(filterId)}
+      className="flex items-center gap-2 text-[0.9em] font-semibold tracking-wide text-light-primaryText capitalize"
+      onClick={() => handleProjectSelection(project)}
     >
       {icon}
-      {filterName}
+      {project.title}
     </button>
   );
 }

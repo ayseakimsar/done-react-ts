@@ -16,7 +16,7 @@ interface Props {
   createTask: (columnId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
   deleteTask: (taskId: Id) => void;
-  handleTaskClick: () => void;
+  onTaskClick: (task: Task) => void;
 }
 
 export default function ColumnContainer({
@@ -28,7 +28,7 @@ export default function ColumnContainer({
   updateTask,
   createTask,
   deleteTask,
-  handleTaskClick,
+  onTaskClick,
 }: Props) {
   const {
     setNodeRef,
@@ -92,7 +92,6 @@ export default function ColumnContainer({
           <div className="flex items-center gap-3">
             <CircleIcon color={column.color} />
             <div
-              onClick={handleTaskClick}
               onBlur={handleBlur}
               onKeyDown={(e) => {
                 if (e.key === "Enter") handleBlur();
@@ -122,7 +121,8 @@ export default function ColumnContainer({
               task={task}
               deleteTask={deleteTask}
               updateTask={updateTask}
-              handleTaskClick={handleTaskClick}
+              subtasks={tasks.filter((t) => t.parentTaskId === task.id)}
+              onTaskClick={onTaskClick}
             />
           ))}
         </SortableContext>

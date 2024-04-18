@@ -5,9 +5,11 @@ export default {
     extend: {
       gridTemplateColumns: {
         task: "auto 1fr auto",
+        taskModal: "auto 1fr",
       },
       gridTemplateRows: {
         task: "auto 1fr",
+        taskModal: "auto 1fr",
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],
@@ -19,6 +21,7 @@ export default {
           mainSidebar: "#E8F3FF",
           secondarySidebar: "#fff",
           task: "#fff",
+          subtask: "#FCFCFD",
         },
         dark: {
           brand: "#93C5FD",

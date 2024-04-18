@@ -1,12 +1,20 @@
-export default function CheckboxDone() {
+interface Props {
+  strokeWidth: number;
+  viewBox: string;
+}
+
+export default function Checkbox({
+  strokeWidth = 1.2,
+  viewBox = "0 0 27 27",
+}: Props) {
   return (
     <div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
-        viewBox="0 0 27 27"
-        strokeWidth={1.2}
-        stroke="#9199a5"
+        viewBox={viewBox}
+        strokeWidth={strokeWidth}
+        color="#9199a5"
         className="w-6 h-6"
       >
         <path

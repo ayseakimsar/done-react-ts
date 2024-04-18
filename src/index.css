@@ -13,3 +13,9 @@
   background-color: #9199a542; /* color of the handle */
   border-radius: 20px; /* roundness of the handle */
 }
+
+.grid-kanban-board {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+}

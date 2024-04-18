@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Column, Id, Task } from "../../types";
+import { Column, Id, Project, Task } from "../../types";
 import ColumnContainer from "./ColumnContainer";
 import { initialColumnData, initialTaskData } from "../../initialData";
 import {
@@ -17,18 +17,20 @@ import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
 import { columnColors } from "../../columnColors";
 import { generateId } from "../../utils/generateId";
-import TaskModal from "./TaskModal";
+import TaskModal from "./TaskModal/TaskModal";
 
 interface Props {
-  activeProjectId: Id | null;
+  activeProject: Project | null;
+  projects: Project[];
 }
 
-export default function KanbanBoard({ activeProjectId }: Props) {
+export default function KanbanBoard({ activeProject, projects }: Props) {
   const [columns, setColumns] = useState<Column[]>(initialColumnData);
   const [tasks, setTasks] = useState<Task[]>(initialTaskData);
-  const [activeColumn, setActiveColumn] = useState<Column | null>();
+  const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
+  const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
   const [activeTask, setActiveTask] = useState<Task | null>();
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
   const columnsId = useMemo(() => {
     return columns.map((col) => col.id);
   }, [columns]);
@@ -42,11 +44,11 @@ export default function KanbanBoard({ activeProjectId }: Props) {
       },
     })
   );
-  const filteredColumns = activeProjectId
-    ? columns.filter((col) => col.projectId === activeProjectId)
+  const filteredColumns = activeProject?.id
+    ? columns.filter((col) => col.projectId === activeProject?.id)
     : columns;
 
-  function createNewColumn(projectId: Id = activeProjectId || 0) {
+  function createNewColumn(projectId: Id = activeProject?.id || 0) {
     const columnToAdd: Column = {
       id: generateId(),
       title: `Column ${columns.length + 1}`,
@@ -79,10 +81,13 @@ export default function KanbanBoard({ activeProjectId }: Props) {
   }
 
   function createTask(columnId: Id) {
-    const newTask = {
+    const newTask: Task = {
       id: generateId(),
       columnId: columnId,
       content: `Task ${tasks.length + 1}`,
+      dueDate: null,
+      labelId: null,
+      parentTaskId: null,
     };
     setTasks([...tasks, newTask]);
   }
@@ -102,28 +107,22 @@ export default function KanbanBoard({ activeProjectId }: Props) {
     setTasks(newTasks);
   }
 
-  function handleTaskClick() {
-    setIsTaskModalOpen(true);
-  }
-
   function onDragStart(event: DragStartEvent) {
-    setActiveColumn(null);
-    setActiveTask(null);
+    setColumnOnDrag(null);
+    setTaskOnDrag(null);
     if (event.active.data.current?.type === "Column") {
-      setActiveColumn(event.active.data.current?.column);
+      setColumnOnDrag(event.active.data.current?.column);
     }
 
     if (event.active.data.current?.type === "Task") {
-      setActiveTask(event.active.data.current?.task);
+      setTaskOnDrag(event.active.data.current?.task);
     }
   }
 
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
-    console.log(active.data.current?.type);
-    console.log(over.data.current?.type);
-    console.log(columns);
+
     const activeId = active.id;
     const overId = over.id;
     if (activeId === overId) return;
@@ -168,8 +167,12 @@ export default function KanbanBoard({ activeProjectId }: Props) {
     }
   }
 
+  function handleTaskClick(task: Task) {
+    setActiveTask(task);
+  }
+
   return (
-    <div className="flex gap-10 h-[90vh] overflow-x-scroll bg-light-mainBackground dark:bg-dark-mainBackground">
+    <div className="flex gap-10 h-[100vh] overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground ml-10">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -187,37 +190,38 @@ export default function KanbanBoard({ activeProjectId }: Props) {
                 createTask={createTask}
                 updateTask={updateTask}
                 deleteTask={deleteTask}
-                handleTaskClick={handleTaskClick}
                 tasks={tasks.filter((task) => task.columnId === column.id)}
                 tasksId={tasksId}
+                onTaskClick={handleTaskClick}
               />
             ))}
           </SortableContext>
         </div>
         {createPortal(
           <DragOverlay>
-            {activeColumn && (
+            {columnOnDrag && (
               <ColumnContainer
-                column={activeColumn}
+                column={columnOnDrag}
                 updateColumn={updateColumn}
                 deleteColumn={deleteColumn}
                 createTask={createTask}
                 updateTask={updateTask}
                 deleteTask={deleteTask}
-                handleTaskClick={handleTaskClick}
                 tasks={tasks.filter(
-                  (task) => task.columnId === activeColumn.id
+                  (task) => task.columnId === columnOnDrag.id
                 )}
                 tasksId={tasksId}
+                onTaskClick={handleTaskClick}
               />
             )}
 
-            {activeTask && (
+            {taskOnDrag && (
               <TaskCard
                 updateTask={updateTask}
-                task={activeTask}
+                task={taskOnDrag}
                 deleteTask={deleteTask}
-                handleTaskClick={handleTaskClick}
+                subtasks={tasks}
+                onTaskClick={handleTaskClick}
               />
             )}
           </DragOverlay>,
@@ -230,7 +234,29 @@ export default function KanbanBoard({ activeProjectId }: Props) {
       >
         + New column
       </button>
-      <div>{isTaskModalOpen && createPortal(<TaskModal />, document.body)}</div>
+
+      <div>
+        {activeTask &&
+          createPortal(
+            <div>
+              <div
+                tabIndex={0}
+                onClick={() => setActiveTask(null)}
+                onKeyDown={(e) => console.log(e.key)}
+                className="w-screen h-screen bg-dark-mainBackground opacity-50 fixed top-0 left-0  z-10"
+              />
+              <TaskModal
+                projects={projects}
+                columns={columns}
+                task={activeTask}
+                subtasks={tasks.filter(
+                  (task) => task.parentTaskId === activeTask.id
+                )}
+              />
+            </div>,
+            document.body
+          )}
+      </div>
     </div>
   );
 }
