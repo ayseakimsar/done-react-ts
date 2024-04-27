@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Column, Id, Task } from "../../types";
@@ -30,6 +30,8 @@ export default function ColumnContainer({
   deleteTask,
   onTaskClick,
 }: Props) {
+  // Use useEffect to focus the input element when columnEditMode is true
+
   const {
     setNodeRef,
     attributes,
@@ -45,7 +47,7 @@ export default function ColumnContainer({
     },
   });
 
-  const [editMode, setEditMode] = useState(false);
+  const [columnEditMode, setColumnEditMode] = useState(false);
 
   const [isColumnHovered, setIsColumnHovered] = useState(false);
 
@@ -57,12 +59,20 @@ export default function ColumnContainer({
   }
 
   function handleBlur() {
-    setEditMode(false);
+    setColumnEditMode(false);
   }
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
   };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (columnEditMode && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [columnEditMode]);
 
   if (isDragging) {
     return (
@@ -92,13 +102,15 @@ export default function ColumnContainer({
           <div className="flex items-center gap-3">
             <CircleIcon color={column.color} />
             <div
+              onClick={() => setColumnEditMode(true)}
               onBlur={handleBlur}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleBlur();
+                if (e.key === "Enter" && columnEditMode === true) handleBlur();
               }}
             >
-              {editMode ? (
+              {columnEditMode ? (
                 <input
+                  ref={inputRef} // Attach the ref to the input element
                   value={column.title}
                   onChange={(e) => updateColumn(column.id, e.target?.value)}
                 />

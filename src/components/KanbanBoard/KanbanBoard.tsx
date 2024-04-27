@@ -51,7 +51,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
   function createNewColumn(projectId: Id = activeProject?.id || 0) {
     const columnToAdd: Column = {
       id: generateId(),
-      title: `Column ${columns.length + 1}`,
+      title: `New Column`,
       color: generateColor(),
       projectId: projectId,
     };
@@ -228,12 +228,14 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
           document.body
         )}
       </DndContext>
-      <button
-        className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
-        onClick={() => createNewColumn()}
-      >
-        + New column
-      </button>
+      {
+        <button
+          className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
+          onClick={() => createNewColumn()}
+        >
+          + New column
+        </button>
+      }
 
       <div>
         {activeTask &&
