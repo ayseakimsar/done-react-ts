@@ -123,9 +123,14 @@ export default function TaskCard({
         className={` ${
           isTaskHovered ? "opacity-1" : "opacity-0"
         } transition-opacity row-start-1 row-end-3 col-start-3`}
-        onClick={() => deleteTask(task.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteTask(task.id);
+        }}
       >
         <TrashIcon />
+      </button>
+      <button>
         <MoreIcon />
       </button>
     </div>
