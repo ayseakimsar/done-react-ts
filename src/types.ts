@@ -15,7 +15,7 @@ export type Column = {
 
 export type Task = {
   id: Id;
-  columnId: Id;
+  columnId: Id | null;
   content: string;
   dueDate: string | null;
   parentTaskId: Id | null;

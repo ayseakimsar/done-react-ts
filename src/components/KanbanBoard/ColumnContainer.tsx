@@ -110,7 +110,7 @@ export default function ColumnContainer({
             >
               {columnEditMode ? (
                 <input
-                  ref={inputRef} // Attach the ref to the input element
+                  ref={inputRef}
                   value={column.title}
                   onChange={(e) => updateColumn(column.id, e.target?.value)}
                 />

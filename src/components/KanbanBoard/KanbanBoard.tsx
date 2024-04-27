@@ -92,7 +92,23 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
     setTasks([...tasks, newTask]);
   }
 
+  function createSubTask(taskId: Id) {
+    const newSubTask: Task = {
+      id: generateId(),
+      columnId: null,
+      content: "New subtask",
+      dueDate: null,
+      labelId: null,
+      parentTaskId: taskId,
+    };
+
+    setTasks([...tasks, newSubTask]);
+  }
+
   function updateTask(taskId: Id, content: string) {
+    const taskToUpdate = tasks.filter((task) => task.id === taskId);
+    console.log(taskToUpdate[0]);
+
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) {
         return task;
@@ -250,7 +266,11 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
               <TaskModal
                 projects={projects}
                 columns={columns}
-                task={activeTask}
+                task={tasks.filter((task) => task.id === activeTask.id)[0]}
+                createSubTask={createSubTask}
+                deleteTask={deleteTask}
+                updateTask={updateTask}
+                handleTaskClick={handleTaskClick}
                 subtasks={tasks.filter(
                   (task) => task.parentTaskId === activeTask.id
                 )}
