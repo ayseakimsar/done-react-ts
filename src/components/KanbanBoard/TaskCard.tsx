@@ -61,7 +61,6 @@ export default function TaskCard({
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
-    opacity: taskCompleted ? 0 : isDragging ? 0.4 : 1,
   };
 
   if (isDragging) {
@@ -87,21 +86,21 @@ export default function TaskCard({
       className="px-3 grid grid-rows-2 grid-cols-task gap-2 items-center min-h-[80px] h-[auto] w-[290px] bg-light-task dark:bg-dark-task shadow-md dark:drop-shadow-2xl rounded-xl  text-light-primaryText dark:text-dark-primaryText"
     >
       <div
-        onClick={() => handleTaskCompleted(task.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleTaskCompleted(task.id);
+        }}
         onMouseEnter={() => setMouseEntersCheckbox(true)}
         onMouseLeave={() => setMouseEntersCheckbox(false)}
         className="col-start-1 row-start-1 row-end-3 mb-7"
         style={{
+          ...style,
           transition: "all 0.3s ease",
           transform: taskCompleted ? "scale(1.2)" : "scale(1)",
           opacity: taskCompleted ? 0 : 1,
         }}
       >
-        {mouseEntersCheckbox ? (
-          <CheckboxDone />
-        ) : (
-          <Checkbox strokeWidth={1.2} viewBox={"0 0 27 27"} />
-        )}
+        {mouseEntersCheckbox ? <CheckboxDone /> : <Checkbox />}
       </div>
       <div className="pt-4 self-end font-semibold text-sm text-light-primaryText  dark:text-dark-primaryText h-[auto] ">
         {editMode ? (
