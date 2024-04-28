@@ -36,6 +36,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
   {
     id: 5,
@@ -44,6 +45,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: null,
     labelId: null,
+    completed: false,
   },
   {
     id: 6,
@@ -52,6 +54,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
   {
     id: 7,
@@ -60,6 +63,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
   {
     id: 8,
@@ -68,6 +72,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
   {
     id: 9,
@@ -76,6 +81,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
   {
     id: 10,
@@ -84,6 +90,7 @@ export const initialTaskData: Task[] = [
     dueDate: "",
     parentTaskId: 5,
     labelId: null,
+    completed: false,
   },
 ];
 

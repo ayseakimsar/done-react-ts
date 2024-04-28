@@ -11,10 +11,12 @@ interface Props {
   column: Column;
   tasks: Task[];
   tasksId: Id[];
+  allTasks: Task[];
   updateColumn: (columnId: Id, title: string) => void;
   deleteColumn: (columnId: Id) => void;
   createTask: (columnId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
+  completeTask: (taskId: Id) => void;
   deleteTask: (taskId: Id) => void;
   onTaskClick: (task: Task) => void;
 }
@@ -23,9 +25,11 @@ export default function ColumnContainer({
   column,
   tasks,
   tasksId,
+  allTasks,
   updateColumn,
   deleteColumn,
   updateTask,
+  completeTask,
   createTask,
   deleteTask,
   onTaskClick,
@@ -70,7 +74,7 @@ export default function ColumnContainer({
 
   useEffect(() => {
     if (columnEditMode && inputRef.current) {
-      inputRef.current.focus();
+      inputRef.current.select();
     }
   }, [columnEditMode]);
 
@@ -127,16 +131,20 @@ export default function ColumnContainer({
       {/* Column Content */}
       <div className="items-center h-[70%] flex flex-col gap-3 overflow-y-hidden hover:overflow-y-auto">
         <SortableContext items={tasksId}>
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              updateTask={updateTask}
-              subtasks={tasks.filter((t) => t.parentTaskId === task.id)}
-              onTaskClick={onTaskClick}
-            />
-          ))}
+          {tasks.map(
+            (task) =>
+              !task.completed && (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  deleteTask={deleteTask}
+                  updateTask={updateTask}
+                  completeTask={completeTask}
+                  subtasks={allTasks.filter((t) => t.parentTaskId === task.id)}
+                  onTaskClick={onTaskClick}
+                />
+              )
+          )}
         </SortableContext>
       </div>
       {/* Column Footer */}

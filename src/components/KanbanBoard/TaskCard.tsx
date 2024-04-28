@@ -5,28 +5,29 @@ import { Id, Task } from "../../types";
 import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
 import Checkbox from "../../icons/KanbanBoard/Checkbox";
 import CheckboxDone from "../../icons/KanbanBoard/CheckboxDone";
-
-import MoreIcon from "../../icons/KanbanBoard/MoreIcon";
+import EditModeIcon from "../../icons/KanbanBoard/EditModeIcon";
 
 interface Props {
   task: Task;
   subtasks: Task[];
   deleteTask: (taskId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
+  completeTask: (taskId: Id) => void;
   onTaskClick: (task: Task) => void;
 }
 
 export default function TaskCard({
   task,
+  subtasks,
   deleteTask,
   updateTask,
+  completeTask,
   onTaskClick,
 }: Props) {
   const [mouseEntersCheckbox, setMouseEntersCheckbox] = useState(false);
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [isTaskHovered, setIsTaskHovered] = useState(false);
   const [editMode, setEditMode] = useState(false);
-
   function handleMouseEntersTask() {
     setIsTaskHovered(true);
   }
@@ -38,7 +39,7 @@ export default function TaskCard({
   function handleTaskCompleted(id: Id) {
     setTaskCompleted(true);
     setTimeout(() => {
-      deleteTask(id);
+      completeTask(id);
     }, 500);
   }
 
@@ -117,22 +118,32 @@ export default function TaskCard({
         )}
       </div>
       <div className=" self-start col-start-2 row-start-2  text-xs text-light-primaryTextLight dark:text-dark-primaryText">
-        0 of 3 subtasks
+        {subtasks.filter((subtask) => subtask.completed === true).length} of{" "}
+        {subtasks.length} subtasks
       </div>
-      <button
-        className={` ${
-          isTaskHovered ? "opacity-1" : "opacity-0"
-        } transition-opacity row-start-1 row-end-3 col-start-3`}
-        onClick={(e) => {
-          e.stopPropagation();
-          deleteTask(task.id);
-        }}
-      >
-        <TrashIcon />
-      </button>
-      <button>
-        <MoreIcon />
-      </button>
+      <div className="items-center row-start-1 row-end-3 col-start-3">
+        <button
+          className={` ${
+            isTaskHovered ? "opacity-1" : "opacity-0"
+          } transition-opacity `}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTask(task.id);
+          }}
+        >
+          <TrashIcon />
+        </button>
+        <button
+          className={` ${
+            isTaskHovered ? "opacity-1" : "opacity-0"
+          } transition-opacity `}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <EditModeIcon />
+        </button>
+      </div>
     </div>
   );
 }

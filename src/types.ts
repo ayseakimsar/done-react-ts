@@ -20,6 +20,7 @@ export type Task = {
   dueDate: string | null;
   parentTaskId: Id | null;
   labelId: Id | null;
+  completed: boolean;
 };
 
 export type Label = {

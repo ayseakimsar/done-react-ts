@@ -30,6 +30,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
   const [activeTask, setActiveTask] = useState<Task | null>();
+  console.log(tasks);
 
   const columnsId = useMemo(() => {
     return columns.map((col) => col.id);
@@ -88,6 +89,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
       dueDate: null,
       labelId: null,
       parentTaskId: null,
+      completed: false,
     };
     setTasks([...tasks, newTask]);
   }
@@ -100,6 +102,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
       dueDate: null,
       labelId: null,
       parentTaskId: taskId,
+      completed: false,
     };
 
     setTasks([...tasks, newSubTask]);
@@ -120,6 +123,18 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
 
   function deleteTask(taskId: Id) {
     const newTasks = tasks.filter((task) => task.id !== taskId);
+    setTasks(newTasks);
+  }
+
+  function completeTask(taskId: Id) {
+    const newTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      if (task.id === taskId && task.completed === true)
+        return { ...task, completed: false };
+      if (task.id === taskId && task.completed === false)
+        return { ...task, completed: true };
+    });
+
     setTasks(newTasks);
   }
 
@@ -201,11 +216,13 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
               <ColumnContainer
                 key={column.id}
                 column={column}
+                completeTask={completeTask}
                 updateColumn={updateColumn}
                 deleteColumn={deleteColumn}
                 createTask={createTask}
                 updateTask={updateTask}
                 deleteTask={deleteTask}
+                allTasks={tasks}
                 tasks={tasks.filter((task) => task.columnId === column.id)}
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
@@ -220,9 +237,11 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
                 column={columnOnDrag}
                 updateColumn={updateColumn}
                 deleteColumn={deleteColumn}
+                completeTask={completeTask}
                 createTask={createTask}
                 updateTask={updateTask}
                 deleteTask={deleteTask}
+                allTasks={tasks}
                 tasks={tasks.filter(
                   (task) => task.columnId === columnOnDrag.id
                 )}
@@ -233,6 +252,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
 
             {taskOnDrag && (
               <TaskCard
+                completeTask={completeTask}
                 updateTask={updateTask}
                 task={taskOnDrag}
                 deleteTask={deleteTask}
@@ -270,6 +290,7 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
                 createSubTask={createSubTask}
                 deleteTask={deleteTask}
                 updateTask={updateTask}
+                completeTask={completeTask}
                 handleTaskClick={handleTaskClick}
                 subtasks={tasks.filter(
                   (task) => task.parentTaskId === activeTask.id
