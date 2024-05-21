@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Column, Id, Project, Task } from "../../types";
 import ColumnContainer from "./ColumnContainer";
-import { initialColumnData, initialTaskData } from "../../initialData";
 import {
   DndContext,
   DragEndEvent,
@@ -22,15 +21,23 @@ import TaskModal from "./TaskModal/TaskModal";
 interface Props {
   activeProject: Project | null;
   projects: Project[];
+  tasks: Task[];
+  setTasks: (tasks: Task[]) => void;
+  columns: Column[];
+  setColumns: (columns: Column[]) => Task[] | void;
 }
 
-export default function KanbanBoard({ activeProject, projects }: Props) {
-  const [columns, setColumns] = useState<Column[]>(initialColumnData);
-  const [tasks, setTasks] = useState<Task[]>(initialTaskData);
+export default function KanbanBoard({
+  activeProject,
+  projects,
+  tasks,
+  setTasks,
+  columns,
+  setColumns,
+}: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
   const [activeTask, setActiveTask] = useState<Task | null>();
-  console.log(tasks);
 
   const columnsId = useMemo(() => {
     return columns.map((col) => col.id);
@@ -176,12 +183,15 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
     //dropping a task over a task
 
     if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
-        const activeIndex = tasks.findIndex((task) => task.id === activeId);
-        const overIndex = tasks.findIndex((task) => task.id === overId);
+      setTasks((tasks: Task[]) => {
+        const activeIndex = tasks.findIndex(
+          (task: Task) => task.id === activeId
+        );
+        const overIndex = tasks.findIndex((task: Task) => task.id === overId);
         if (overIndex === -1) return tasks;
         tasks[activeIndex].columnId = tasks[overIndex].columnId;
-        return arrayMove(tasks, activeIndex, overIndex);
+        const result: Task[] = arrayMove(tasks, activeIndex, overIndex);
+        return result;
       });
     }
 
@@ -264,14 +274,13 @@ export default function KanbanBoard({ activeProject, projects }: Props) {
           document.body
         )}
       </DndContext>
-      {
-        <button
-          className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
-          onClick={() => createNewColumn()}
-        >
-          + New column
-        </button>
-      }
+
+      <button
+        className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
+        onClick={() => createNewColumn()}
+      >
+        + New column
+      </button>
 
       <div>
         {activeTask &&
