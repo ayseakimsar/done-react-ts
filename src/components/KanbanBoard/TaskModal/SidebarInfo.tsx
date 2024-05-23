@@ -6,8 +6,8 @@ interface Props {
 
 export default function SidebarInfo({ children }: Props) {
   return (
-    <div className=" font-medium text-[14px] text-light-primaryText  dark:text-dark-primaryText h-[auto] tracking-[0.07em]">
+    <button className=" font-medium text-[14px] text-light-primaryText  dark:text-dark-primaryText h-[auto] tracking-[0.07em]">
       {children}
-    </div>
+    </button>
   );
 }

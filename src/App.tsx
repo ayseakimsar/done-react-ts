@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import { Column, Project, Task } from "./types";
+import { Column, Id, Project, Task } from "./types";
 import KanbanBoard from "./components/KanbanBoard/KanbanBoard";
 import SecondarySidebar from "./components/SecondarySidebar/SecondarySidebar";
 import MainSidebar from "./components/MainSidebar/MainSidebar";
@@ -23,6 +23,7 @@ function App() {
     title: "Inbox",
     type: "main-filter",
   });
+  const [activeTask, setActiveTask] = useState<Task | null>();
 
   function createNewProject() {
     const newProject = {
@@ -57,6 +58,14 @@ function App() {
   function handleProjectSelection(project: Project) {
     setActiveProject(project);
   }
+  function updateTaskPriority(taskId: Id, priority: string) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      else return { ...task, priority: priority };
+    });
+
+    setTasks(updatedTasks);
+  }
 
   return (
     <div className="grid-kanban-board h-[100vh]">
@@ -74,6 +83,9 @@ function App() {
         setTasks={setTasks}
         columns={columns}
         setColumns={setColumns}
+        activeTask={activeTask}
+        setActiveTask={setActiveTask}
+        updateTaskPriority={updateTaskPriority}
       />
     </div>
   );

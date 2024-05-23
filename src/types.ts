@@ -17,10 +17,11 @@ export type Task = {
   id: Id;
   columnId: Id | null;
   content: string;
-  dueDate: string | null;
+  dueDate: string | null /*  yyyy-mm-dd */;
   parentTaskId: Id | null;
   labelId: Id | null;
   completed: boolean;
+  priority: string;
 };
 
 export type Label = {

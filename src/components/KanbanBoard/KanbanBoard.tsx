@@ -25,6 +25,9 @@ interface Props {
   setTasks: (tasks: Task[]) => void;
   columns: Column[];
   setColumns: (columns: Column[]) => Task[] | void;
+  activeTask: Task | null | undefined;
+  setActiveTask: (activeTask: Task | null | undefined) => Task[] | void;
+  updateTaskPriority: (taskId: Id, priority: string) => void;
 }
 
 export default function KanbanBoard({
@@ -34,10 +37,12 @@ export default function KanbanBoard({
   setTasks,
   columns,
   setColumns,
+  activeTask,
+  setActiveTask,
+  updateTaskPriority,
 }: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
-  const [activeTask, setActiveTask] = useState<Task | null>();
 
   const columnsId = useMemo(() => {
     return columns.map((col) => col.id);
@@ -97,6 +102,7 @@ export default function KanbanBoard({
       labelId: null,
       parentTaskId: null,
       completed: false,
+      priority: "none",
     };
     setTasks([...tasks, newTask]);
   }
@@ -110,6 +116,7 @@ export default function KanbanBoard({
       labelId: null,
       parentTaskId: taskId,
       completed: false,
+      priority: "none",
     };
 
     setTasks([...tasks, newSubTask]);
@@ -134,7 +141,7 @@ export default function KanbanBoard({
   }
 
   function completeTask(taskId: Id) {
-    const newTasks = tasks.map((task) => {
+    const newTasks: Task[] = tasks.map((task) => {
       if (task.id !== taskId) return task;
       if (task.id === taskId && task.completed === true)
         return { ...task, completed: false };
@@ -183,7 +190,7 @@ export default function KanbanBoard({
     //dropping a task over a task
 
     if (isActiveATask && isOverATask) {
-      setTasks((tasks: Task[]) => {
+      setTasks((tasks) => {
         const activeIndex = tasks.findIndex(
           (task: Task) => task.id === activeId
         );
@@ -300,6 +307,7 @@ export default function KanbanBoard({
                 deleteTask={deleteTask}
                 updateTask={updateTask}
                 completeTask={completeTask}
+                updateTaskPriority={updateTaskPriority}
                 handleTaskClick={handleTaskClick}
                 subtasks={tasks.filter(
                   (task) => task.parentTaskId === activeTask.id

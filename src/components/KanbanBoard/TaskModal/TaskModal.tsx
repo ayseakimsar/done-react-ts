@@ -6,7 +6,7 @@ import SidebarInfo from "./SidebarInfo";
 import SubtaskContainer from "./SubtaskContainer";
 import PlusIcon from "../../../icons/KanbanBoard/PlusIcon";
 import { useEffect, useRef, useState } from "react";
-
+import PriorityBox from "./PriorityBox";
 interface Props {
   columns: Column[];
   task: Task;
@@ -17,6 +17,7 @@ interface Props {
   updateTask: (taskId: Id, content: string) => void;
   handleTaskClick: (task: Task) => void;
   completeTask: (taskId: Id) => void;
+  updateTaskPriority: (taskId: Id, priority: string) => void;
 }
 
 export default function TaskModal({
@@ -29,6 +30,7 @@ export default function TaskModal({
   updateTask,
   handleTaskClick,
   completeTask,
+  updateTaskPriority,
 }: Props) {
   const column: Column | null = task
     ? columns.find((c) => c.id === (task.columnId || null)) || null
@@ -64,7 +66,7 @@ export default function TaskModal({
         </div>
         <div className="flex flex-col gap-1">
           <SidebarHeader>Priority</SidebarHeader>
-          <SidebarInfo>High</SidebarInfo>
+          <PriorityBox task={task} updateTaskPriority={updateTaskPriority} />
         </div>
         <SidebarHeader>Labels</SidebarHeader>
       </aside>
