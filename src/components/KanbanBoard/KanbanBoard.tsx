@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Column, Id, Project, Task } from "../../types";
+import { Column, Id, Label, Project, Task } from "../../types";
 import ColumnContainer from "./ColumnContainer";
 import {
   DndContext,
@@ -22,16 +22,19 @@ interface Props {
   activeProject: Project | null;
   projects: Project[];
   tasks: Task[];
+  labeledTasks: Task[] | null;
   setTasks: (tasks: Task[]) => void;
   columns: Column[];
   setColumns: (columns: Column[]) => Task[] | void;
   activeTask: Task | null | undefined;
+  activeLabel: Label | null | undefined;
   setActiveTask: (activeTask: Task | null | undefined) => Task[] | void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
 }
 
 export default function KanbanBoard({
   activeProject,
+  activeLabel,
   projects,
   tasks,
   setTasks,
@@ -40,6 +43,7 @@ export default function KanbanBoard({
   activeTask,
   setActiveTask,
   updateTaskPriority,
+  labeledTasks,
 }: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
@@ -57,8 +61,18 @@ export default function KanbanBoard({
       },
     })
   );
-  const filteredColumns = activeProject?.id
+  const filteredColumnsByProject = activeProject?.id
     ? columns.filter((col) => col.projectId === activeProject?.id)
+    : columns;
+
+  const filteredColumnsByFilter = activeLabel?.id
+    ? columns.filter((col) => col.labelId === activeLabel.id)
+    : columns;
+
+  const filteredColumns = activeProject
+    ? filteredColumnsByProject
+    : activeLabel
+    ? filteredColumnsByFilter
     : columns;
 
   function createNewColumn(projectId: Id = activeProject?.id || 0) {
@@ -67,6 +81,7 @@ export default function KanbanBoard({
       title: `New Column`,
       color: generateColor(),
       projectId: projectId,
+      labelId: null,
     };
     setColumns([...columns, columnToAdd]);
   }
@@ -93,13 +108,13 @@ export default function KanbanBoard({
     setTasks(newTasks);
   }
 
-  function createTask(columnId: Id) {
+  function createTask(columnId: Id, labelId: Id | null = null) {
     const newTask: Task = {
       id: generateId(),
       columnId: columnId,
       content: `Task ${tasks.length + 1}`,
       dueDate: null,
-      labelId: null,
+      labelIds: labelId ? [labelId] : null,
       parentTaskId: null,
       completed: false,
       priority: "none",
@@ -113,7 +128,7 @@ export default function KanbanBoard({
       columnId: null,
       content: "New subtask",
       dueDate: null,
-      labelId: null,
+      labelIds: null,
       parentTaskId: taskId,
       completed: false,
       priority: "none",
@@ -123,8 +138,7 @@ export default function KanbanBoard({
   }
 
   function updateTask(taskId: Id, content: string) {
-    const taskToUpdate = tasks.filter((task) => task.id === taskId);
-    console.log(taskToUpdate[0]);
+    // const taskToUpdate = tasks.filter((task) => task.id === taskId);
 
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) {
@@ -150,6 +164,10 @@ export default function KanbanBoard({
     });
 
     setTasks(newTasks);
+  }
+
+  function handleTaskClick(task: Task) {
+    setActiveTask(task);
   }
 
   function onDragStart(event: DragStartEvent) {
@@ -215,10 +233,6 @@ export default function KanbanBoard({
     }
   }
 
-  function handleTaskClick(task: Task) {
-    setActiveTask(task);
-  }
-
   return (
     <div className="flex gap-10 h-[100vh] overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground ml-10">
       <DndContext
@@ -240,9 +254,14 @@ export default function KanbanBoard({
                 updateTask={updateTask}
                 deleteTask={deleteTask}
                 allTasks={tasks}
-                tasks={tasks.filter((task) => task.columnId === column.id)}
+                tasks={
+                  activeLabel && labeledTasks
+                    ? labeledTasks
+                    : tasks.filter((task) => task.columnId === column.id)
+                }
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
+                activeLabel={activeLabel}
               />
             ))}
           </SortableContext>
@@ -264,6 +283,7 @@ export default function KanbanBoard({
                 )}
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
+                activeLabel={activeLabel}
               />
             )}
 
@@ -281,14 +301,18 @@ export default function KanbanBoard({
           document.body
         )}
       </DndContext>
+      {/* New Column Button */}
+      {!activeLabel && (
+        <button
+          className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
+          onClick={() => createNewColumn()}
+        >
+          + New column
+        </button>
+      )}
+      {/* New Column Button */}
 
-      <button
-        className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
-        onClick={() => createNewColumn()}
-      >
-        + New column
-      </button>
-
+      {/* Task Modal */}
       <div>
         {activeTask &&
           createPortal(
@@ -317,6 +341,7 @@ export default function KanbanBoard({
             document.body
           )}
       </div>
+      {/* Task Modal */}
     </div>
   );
 }

@@ -1,11 +1,19 @@
-import { Column, Project, Task } from "./types";
+import { Column, Label, Project, Task } from "./types";
 
 export const initialColumnData: Column[] = [
   {
     id: "inboxColumn",
     title: "Inbox",
     color: "bg-blue-300",
-    projectId: "inbox",
+    projectId: null,
+    labelId: null,
+  },
+  {
+    id: 128390131,
+    title: "",
+    color: "bg-blue-300",
+    projectId: null,
+    labelId: 1212,
   },
 
   {
@@ -13,18 +21,28 @@ export const initialColumnData: Column[] = [
     title: "to do",
     color: "bg-blue-300",
     projectId: 12,
+    labelId: null,
   },
   {
     id: 2,
     title: "doing",
     color: "bg-violet-300",
     projectId: 23,
+    labelId: null,
   },
   {
     id: 3,
     title: "done",
     color: "bg-green-300",
     projectId: 34,
+    labelId: null,
+  },
+  {
+    id: 18271,
+    title: "done",
+    color: "bg-green-300",
+    projectId: 34,
+    labelId: 1213,
   },
 ];
 
@@ -35,8 +53,9 @@ export const initialTaskData: Task[] = [
     content: "declutter room",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: null,
     completed: false,
+    priority: "none",
   },
   {
     id: 5,
@@ -44,8 +63,9 @@ export const initialTaskData: Task[] = [
     content: "implement the dnd-kit library",
     dueDate: "",
     parentTaskId: null,
-    labelId: null,
+    labelIds: null,
     completed: false,
+    priority: "none",
   },
   {
     id: 6,
@@ -53,8 +73,9 @@ export const initialTaskData: Task[] = [
     content: "set up your workspace",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: null,
     completed: false,
+    priority: "none",
   },
   {
     id: 7,
@@ -62,8 +83,9 @@ export const initialTaskData: Task[] = [
     content: "Finish report for work",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: null,
     completed: false,
+    priority: "none",
   },
   {
     id: 8,
@@ -71,8 +93,9 @@ export const initialTaskData: Task[] = [
     content: "Buy groceries for the week",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: [1212, 1213],
     completed: false,
+    priority: "none",
   },
   {
     id: 9,
@@ -80,8 +103,9 @@ export const initialTaskData: Task[] = [
     content: "Call the dentist to schedule an appointment",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: [1212, 1213],
     completed: false,
+    priority: "none",
   },
   {
     id: 10,
@@ -89,8 +113,9 @@ export const initialTaskData: Task[] = [
     content: "Read a chapter of a book",
     dueDate: "",
     parentTaskId: 5,
-    labelId: null,
+    labelIds: [1212, 1213],
     completed: false,
+    priority: "none",
   },
 ];
 
@@ -126,4 +151,12 @@ export const initialProjectData: Project[] = [
     title: "Roadmap",
     type: "project",
   },
+];
+
+export const initialLabelData: Label[] = [
+  { id: 1212, title: "Work", type: "label" },
+  { id: 1213, title: "Personal", type: "label" },
+  { id: 1214, title: "Urgent", type: "label" },
+  { id: 1215, title: "Shopping", type: "label" },
+  { id: 1216, title: "Fitness", type: "label" },
 ];

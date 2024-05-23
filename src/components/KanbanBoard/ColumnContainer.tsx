@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Column, Id, Task } from "../../types";
+import { Column, Id, Label, Task } from "../../types";
 import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
 import CircleIcon from "../../icons/KanbanBoard/CircleIcon";
 import PlusIcon from "../../icons/KanbanBoard/PlusIcon";
@@ -12,9 +12,10 @@ interface Props {
   tasks: Task[];
   tasksId: Id[];
   allTasks: Task[];
+  activeLabel: Label | null | undefined;
   updateColumn: (columnId: Id, title: string) => void;
   deleteColumn: (columnId: Id) => void;
-  createTask: (columnId: Id) => void;
+  createTask: (columnId: Id, activeLabelId: Id | undefined) => void;
   updateTask: (taskId: Id, content: string) => void;
   completeTask: (taskId: Id) => void;
   deleteTask: (taskId: Id) => void;
@@ -33,6 +34,7 @@ export default function ColumnContainer({
   createTask,
   deleteTask,
   onTaskClick,
+  activeLabel,
 }: Props) {
   // Use useEffect to focus the input element when columnEditMode is true
 
@@ -55,9 +57,17 @@ export default function ColumnContainer({
 
   const [isColumnHovered, setIsColumnHovered] = useState(false);
 
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   function handleMouseEntersColumn() {
     setIsColumnHovered(true);
   }
+
   function handleMouseLeavesColumn() {
     setIsColumnHovered(false);
   }
@@ -65,12 +75,6 @@ export default function ColumnContainer({
   function handleBlur() {
     setColumnEditMode(false);
   }
-  const style = {
-    transition,
-    transform: CSS.Transform.toString(transform),
-  };
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (columnEditMode && inputRef.current) {
@@ -124,9 +128,11 @@ export default function ColumnContainer({
             </div>
           </div>
         </div>
-        <button onClick={() => deleteColumn(column.id)}>
-          <TrashIcon />
-        </button>
+        {!activeLabel && (
+          <button onClick={() => deleteColumn(column.id)}>
+            <TrashIcon />
+          </button>
+        )}
       </div>
       {/* Column Content */}
       <div className="items-center h-[70%] flex flex-col gap-3 overflow-y-hidden hover:overflow-y-auto">
@@ -152,7 +158,7 @@ export default function ColumnContainer({
         className={`${
           isColumnHovered ? `opacity-1` : "opacity-0"
         }  px-5 transition-all  mt-[30px]  flex-end flex  gap-2 text-light-primaryText dark:text-dark-primaryText`}
-        onClick={() => createTask(column.id)}
+        onClick={() => createTask(column.id, activeLabel?.id)}
       >
         <PlusIcon />
         <span className="text-md">Add task</span>

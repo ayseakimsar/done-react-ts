@@ -1,21 +1,26 @@
-import { Project } from "../../types";
+import { Label, Project } from "../../types";
 import InboxIcon from "../../icons/SecondarySidebar/InboxIcon";
 import TodayIcon from "../../icons/SecondarySidebar/TodayIcon";
 import UpcomingIcon from "../../icons/SecondarySidebar/UpcomingIcon";
 import SidebarMainFilter from "./SidebarMainFilter";
-import SidebarProjectFilter from "./SidebarProjectFilter";
-import CreateNewProjectButton from "./CreateNewProjectButton";
-
+import SidebarSecondaryFilter from "./SidebarSecondaryFilter";
+import CreateNewFilterButton from "./CreateNewFilterButton";
 interface Props {
   handleProjectSelection: (project: Project) => void;
+  handleLabelSelection: (label: Label) => void;
   createNewProject: () => void;
+  createNewLabel: () => void;
   projects: Project[];
+  labels: Label[];
 }
 
 export default function SecondarySidebar({
   handleProjectSelection,
+  handleLabelSelection,
   createNewProject,
+  createNewLabel,
   projects,
+  labels,
 }: Props) {
   return (
     <div className="border-r-[1px] border-gray-200 col-start-2 col-end-3  row-start-1 row-end-3  w-[200px] h-[100vh] bg-light-secondarySidebar p-8 flex flex-col gap-[5rem] pt-[3rem]">
@@ -54,21 +59,43 @@ export default function SecondarySidebar({
           {projects.map((project) => {
             return (
               project.type === "project" && (
-                <SidebarProjectFilter
+                <SidebarSecondaryFilter
                   key={project.id}
-                  project={project}
-                  handleProjectSelection={handleProjectSelection}
+                  filter={project}
+                  handleFilterSelection={handleProjectSelection}
                 />
               )
             );
           })}
-          <CreateNewProjectButton createNewProject={createNewProject} />
+          <CreateNewFilterButton
+            createNewFilter={createNewProject}
+            filterType={"project"}
+          />
         </div>
       </div>
       {/*Projects*/}
 
       {/*Filters*/}
-      <div></div>
+      <div className="flex flex-col gap-5 ">
+        <div className="text-[0.7em] font-light text-light-primaryTextLight uppercase tracking-[0.23em] ">
+          Filters & Tags
+        </div>
+        <div className="flex flex-col gap-5 ">
+          {labels.map((label) => {
+            return (
+              <SidebarSecondaryFilter
+                key={label.id}
+                filter={label}
+                handleFilterSelection={handleLabelSelection}
+              />
+            );
+          })}
+          <CreateNewFilterButton
+            createNewFilter={createNewLabel}
+            filterType={"label"}
+          />
+        </div>
+      </div>
       {/*Filters*/}
     </div>
   );

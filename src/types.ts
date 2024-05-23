@@ -11,6 +11,7 @@ export type Column = {
   title: string;
   color: string;
   projectId: Id | null;
+  labelId: Id | null;
 };
 
 export type Task = {
@@ -19,7 +20,7 @@ export type Task = {
   content: string;
   dueDate: string | null /*  yyyy-mm-dd */;
   parentTaskId: Id | null;
-  labelId: Id | null;
+  labelIds: Id[] | null;
   completed: boolean;
   priority: string;
 };
@@ -27,4 +28,5 @@ export type Task = {
 export type Label = {
   id: Id;
   title: string;
+  type: string;
 };
