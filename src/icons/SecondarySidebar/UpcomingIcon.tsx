@@ -6,7 +6,7 @@ export default function UpcomingIcon() {
       viewBox="0 0 28 28"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"

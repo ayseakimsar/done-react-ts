@@ -28,9 +28,9 @@ export default function SubtaskContainer({
       onClick={() => handleTaskClick(subtask)}
       onMouseEnter={() => setIsSubtaskHovered(true)}
       onMouseLeave={() => setIsSubtaskHovered(false)}
-      className="flex items-center justify-between w-[32rem] "
+      className="flex w-[32rem] items-center justify-between"
     >
-      <div className="flex  gap-1">
+      <div className="flex gap-1">
         <div
           onClick={(e) => {
             e.stopPropagation();
@@ -49,8 +49,8 @@ export default function SubtaskContainer({
           )}
         </div>
         <li
-          className={`flex flex-col items- h-11 font-medium text-sm text-light-primaryText  dark:text-dark-primaryText ${
-            subtask.completed ? "line-through decoration-thickness-1" : ""
+          className={`items- flex h-11 flex-col text-sm font-medium text-light-primaryText dark:text-dark-primaryText ${
+            subtask.completed ? "decoration-thickness-1 line-through" : ""
           }`}
         >
           {subtask.content}

@@ -74,7 +74,7 @@ export default function TaskCard({
         ref={setNodeRef}
         {...attributes}
         {...listeners}
-        className="px-3 grid grid-rows-2 grid-cols-task gap-2 items-center  h-[80px] w-[290px] bg-light-task dark:bg-dark-task drop-shadow-md dark:drop-shadow-2xl rounded-xl  text-light-primaryText dark:text-dark-primaryText opacity-10"
+        className="grid h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText opacity-10 drop-shadow-md dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
         style={style}
       ></div>
     );
@@ -88,7 +88,7 @@ export default function TaskCard({
       {...attributes}
       {...listeners}
       style={style}
-      className="px-3 grid grid-rows-2 grid-cols-task gap-2 items-center min-h-[80px] h-[auto] w-[290px] bg-light-task dark:bg-dark-task shadow-md dark:drop-shadow-2xl rounded-xl  text-light-primaryText dark:text-dark-primaryText"
+      className="grid h-[auto] min-h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText shadow-md dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
     >
       <div
         onClick={(e) => {
@@ -111,7 +111,7 @@ export default function TaskCard({
           <Checkbox color={checkboxColor} />
         )}
       </div>
-      <div className="pt-4 self-end font-semibold text-sm text-light-primaryText  dark:text-dark-primaryText h-[auto] ">
+      <div className="h-[auto] self-end pt-4 text-sm font-semibold text-light-primaryText dark:text-dark-primaryText">
         {editMode ? (
           <input
             value={task.content}
@@ -125,15 +125,15 @@ export default function TaskCard({
           task.content
         )}
       </div>
-      <div className=" self-start col-start-2 row-start-2  text-xs text-light-primaryTextLight dark:text-dark-primaryText">
+      <div className="col-start-2 row-start-2 self-start text-xs text-light-primaryTextLight dark:text-dark-primaryText">
         {subtasks.filter((subtask) => subtask.completed === true).length} of{" "}
         {subtasks.length} subtasks
       </div>
-      <div className="items-center row-start-1 row-end-3 col-start-3">
+      <div className="col-start-3 row-start-1 row-end-3 items-center">
         <button
           className={` ${
             isTaskHovered ? "opacity-1" : "opacity-0"
-          } transition-opacity `}
+          } transition-opacity`}
           onClick={(e) => {
             e.stopPropagation();
             deleteTask(task.id);
@@ -144,7 +144,7 @@ export default function TaskCard({
         <button
           className={` ${
             isTaskHovered ? "opacity-1" : "opacity-0"
-          } transition-opacity `}
+          } transition-opacity`}
           onClick={(e) => {
             e.stopPropagation();
           }}

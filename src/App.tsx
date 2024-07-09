@@ -31,7 +31,7 @@ function App() {
   console.log(activeLabel?.title);
   console.log(
     activeLabel &&
-      tasks.filter((task) => task.labelIds?.includes(activeLabel?.id))
+      tasks.filter((task) => task.labelIds?.includes(activeLabel?.id)),
   );
 
   function createNewProject() {

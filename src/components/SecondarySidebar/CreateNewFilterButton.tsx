@@ -11,7 +11,7 @@ export default function CreateNewProjectButton({
 }: Props) {
   return (
     <button
-      className="flex items-center gap-3 text-light-brand text-[0.83em] font-semibold tracking-wide"
+      className="flex items-center gap-3 text-[0.83em] font-semibold tracking-wide text-light-brand"
       onClick={createNewFilter}
     >
       <ProjectIcon color="#93C5FD" />

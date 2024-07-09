@@ -5,5 +5,5 @@
 html,
 body,
 #root {
-  @apply bg-light-mainBackground dark:bg-dark-mainBackground h-[100%] w-[100vw] font-inter;
+  @apply h-[100%] w-[100vw] bg-light-mainBackground font-inter dark:bg-dark-mainBackground;
 }

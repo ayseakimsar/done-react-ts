@@ -22,7 +22,7 @@ export default function LabelBox({ task, labels, updateTaskLabels }: Props) {
   return (
     <div>
       <select
-        className="font-medium text-[14px] text-light-primaryText dark:text-dark-primaryText h-[auto] tracking-[0.07em]"
+        className="h-[auto] text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText"
         value={selectedLabel}
         onChange={(e) => setSelectedLabel(e.target.value)}
       >

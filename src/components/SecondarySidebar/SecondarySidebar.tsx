@@ -23,10 +23,10 @@ export default function SecondarySidebar({
   labels,
 }: Props) {
   return (
-    <div className="border-r-[1px] border-gray-200 col-start-2 col-end-3  row-start-1 row-end-3  w-[200px] h-[100vh] bg-light-secondarySidebar p-8 flex flex-col gap-[5rem] pt-[3rem]">
+    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[200px] flex-col gap-[5rem] border-r-[1px] border-gray-200 bg-light-secondarySidebar p-8 pt-[3rem]">
       {/*Main filters*/}
-      <div className="flex flex-col gap-4 ">
-        <div className="text-[0.7em] font-light text-light-primaryTextLight uppercase tracking-[0.23em]">
+      <div className="flex flex-col gap-4">
+        <div className="text-[0.7em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
           To Do
         </div>
         <div className="flex flex-col gap-3">
@@ -51,8 +51,8 @@ export default function SecondarySidebar({
       {/*Main filters*/}
 
       {/*Projects*/}
-      <div className="flex flex-col gap-5 ">
-        <div className="text-[0.7em] font-light text-light-primaryTextLight uppercase tracking-[0.23em]">
+      <div className="flex flex-col gap-5">
+        <div className="text-[0.7em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
           Projects
         </div>
         <div className="flex flex-col gap-5">
@@ -76,11 +76,11 @@ export default function SecondarySidebar({
       {/*Projects*/}
 
       {/*Filters*/}
-      <div className="flex flex-col gap-5 ">
-        <div className="text-[0.7em] font-light text-light-primaryTextLight uppercase tracking-[0.23em] ">
+      <div className="flex flex-col gap-5">
+        <div className="text-[0.7em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
           Filters & Tags
         </div>
-        <div className="flex flex-col gap-5 ">
+        <div className="flex flex-col gap-5">
           {labels.map((label) => {
             return (
               <SidebarSecondaryFilter

@@ -6,7 +6,7 @@ interface Props {
 
 export default function SidebarInfo({ children }: Props) {
   return (
-    <button className=" font-medium text-[14px] text-light-primaryText  dark:text-dark-primaryText h-[auto] tracking-[0.07em]">
+    <button className="h-[auto] text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText">
       {children}
     </button>
   );

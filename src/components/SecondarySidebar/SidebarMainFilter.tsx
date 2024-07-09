@@ -14,7 +14,7 @@ export default function SidebarMainFilter({
 }: Props) {
   return (
     <button
-      className="flex items-center gap-2 text-[0.9em] font-semibold tracking-wide text-light-primaryText capitalize"
+      className="flex items-center gap-2 text-[0.9em] font-semibold capitalize tracking-wide text-light-primaryText"
       onClick={() => handleProjectSelection(project)}
     >
       {icon}

@@ -7,7 +7,7 @@ export default function SubtaskIcon() {
         viewBox="0 0 25 25"
         strokeWidth={1.2}
         stroke="#b5bbc3"
-        className="w-6 h-6"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"

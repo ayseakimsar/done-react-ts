@@ -61,11 +61,11 @@ export default function TaskModal({
   console.log(task.labelIds);
 
   return (
-    <div className="grid grid-cols-taskModal grid-rows-taskModal w-[800px] h-[700px] bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-20">
-      <header className="px-8 col-span-full h-20 flex items-center text-[0.8em] font-light text-light-primaryTextLight uppercase tracking-[0.23em] border-b-2 border-collapse">
+    <div className="absolute left-1/2 top-1/2 z-20 grid h-[700px] w-[800px] -translate-x-1/2 -translate-y-1/2 transform grid-cols-taskModal grid-rows-taskModal rounded-2xl bg-white shadow-2xl">
+      <header className="col-span-full flex h-20 border-collapse items-center border-b-2 px-8 text-[0.8em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
         {project ? project.title : "-"}{" "}
       </header>
-      <aside className="p-7 flex flex-col gap-8 border-r-2">
+      <aside className="flex flex-col gap-8 border-r-2 p-7">
         <div className="flex flex-col gap-1">
           <SidebarHeader>Parent</SidebarHeader>
           <SidebarInfo>{project ? project.title : "-"}</SidebarInfo>
@@ -93,22 +93,14 @@ export default function TaskModal({
           onKeyDown={(e) => {
             if (e.key === "Enter") setTaskEditMode(false);
           }}
-          className="flex items-center mt-7"
+          className="mt-7 flex items-center"
         >
           <div onClick={() => completeTask(task.id)}>
             <Checkbox color={checkboxColor} />
           </div>
           {taskEditMode ? (
             <input
-              className="
-              p-1
-              rounded-md       /* Border radius */
-              border-gray-300  /* Border color */
-              w-full           /* Full width */
-              text-base        /* Font size */
-              focus:outline-none /* Remove default focus outline */
-              focus:border-slate-300 /* Change border color on focus */
-          "
+              className="/* Border radius */ /* Border color */ /* Full width */ /* Font size */ /* Remove default focus */ /* Change color on focus */ w-full rounded-md border border-gray-300 p-1 text-base outline focus:border-slate-300 focus:outline-none"
               ref={taskInputRef}
               value={task.content}
               onChange={(e) => {
@@ -125,15 +117,15 @@ export default function TaskModal({
         </div>
         <div className="mt-2 flex gap-1">
           <DescriptionIcon />
-          <span className="font-light text-xs text-light-primaryText  dark:text-dark-primaryText h-[auto] tracking-wide">
+          <span className="h-[auto] text-xs font-light tracking-wide text-light-primaryText dark:text-dark-primaryText">
             Description
           </span>
         </div>
-        <div className="mt-5 uppercase font-light text-light-primaryText  dark:text-dark-primaryText text-[10px] tracking-[0.25em]">
+        <div className="mt-5 text-[10px] font-light uppercase tracking-[0.25em] text-light-primaryText dark:text-dark-primaryText">
           sub-tasks
         </div>
         <div className="mt-2 h-[1px] w-[90%] border-b"></div>
-        <ul className="mt-4 overflow-y-auto min-h-[100px] max-h-[180px] ">
+        <ul className="mt-4 max-h-[180px] min-h-[100px] overflow-y-auto">
           {subtasks.map((subtask) => (
             <div>
               {!subtask.completed && (
@@ -150,17 +142,17 @@ export default function TaskModal({
           ))}
         </ul>
         <button
-          className="mt-10 flex gap-2 text-light-primaryTextLight  dark:text-dark-primaryText "
+          className="mt-10 flex gap-2 text-light-primaryTextLight dark:text-dark-primaryText"
           onClick={() => createSubTask(task.id)}
         >
           <PlusIcon />
           Add subtask
         </button>
-        <div className="mt-8 uppercase font-light text-light-primaryText  dark:text-dark-primaryText text-[10px] tracking-[0.25em]">
+        <div className="mt-8 text-[10px] font-light uppercase tracking-[0.25em] text-light-primaryText dark:text-dark-primaryText">
           completed
         </div>
         <div className="mt-2 h-[1px] w-[90%] border-b"></div>
-        <ul className=" overflow-y-auto h-[145px] ">
+        <ul className="h-[145px] overflow-y-auto">
           {subtasks.map((subtask) => (
             <div>
               {subtask.completed && (

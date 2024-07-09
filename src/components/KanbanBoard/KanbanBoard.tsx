@@ -63,7 +63,7 @@ export default function KanbanBoard({
       activationConstraint: {
         distance: 3,
       },
-    })
+    }),
   );
   const filteredColumnsByProject = activeProject?.id
     ? columns.filter((col) => col.projectId === activeProject?.id)
@@ -76,8 +76,8 @@ export default function KanbanBoard({
   const filteredColumns = activeProject
     ? filteredColumnsByProject
     : activeLabel
-    ? filteredColumnsByFilter
-    : columns;
+      ? filteredColumnsByFilter
+      : columns;
 
   function createNewColumn(projectId: Id = activeProject?.id || 0) {
     const columnToAdd: Column = {
@@ -214,7 +214,7 @@ export default function KanbanBoard({
     if (isActiveATask && isOverATask) {
       setTasks((tasks) => {
         const activeIndex = tasks.findIndex(
-          (task: Task) => task.id === activeId
+          (task: Task) => task.id === activeId,
         );
         const overIndex = tasks.findIndex((task: Task) => task.id === overId);
         if (overIndex === -1) return tasks;
@@ -238,7 +238,7 @@ export default function KanbanBoard({
   }
 
   return (
-    <div className="flex gap-10 h-[100vh] overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground ml-10">
+    <div className="ml-10 flex h-[100vh] gap-10 overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -283,7 +283,7 @@ export default function KanbanBoard({
                 deleteTask={deleteTask}
                 allTasks={tasks}
                 tasks={tasks.filter(
-                  (task) => task.columnId === columnOnDrag.id
+                  (task) => task.columnId === columnOnDrag.id,
                 )}
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
@@ -302,13 +302,13 @@ export default function KanbanBoard({
               />
             )}
           </DragOverlay>,
-          document.body
+          document.body,
         )}
       </DndContext>
       {/* New Column Button */}
       {!activeLabel && (
         <button
-          className="bg-light-task dark:bg-dark-task h-[80%] w-[200px] rounded-xl shadow-md mt-[70px] text-light-primaryTextLightest text-3xl hover:shadow-2xl transition duration-[300ms]"
+          className="mt-[70px] h-[80%] w-[200px] rounded-xl bg-light-task text-3xl text-light-primaryTextLightest shadow-md transition duration-[300ms] hover:shadow-2xl dark:bg-dark-task"
           onClick={() => createNewColumn()}
         >
           + New column
@@ -325,7 +325,7 @@ export default function KanbanBoard({
                 tabIndex={0}
                 onClick={() => setActiveTask(null)}
                 onKeyDown={(e) => console.log(e.key)}
-                className="w-screen h-screen bg-dark-mainBackground opacity-50 fixed top-0 left-0  z-10"
+                className="fixed left-0 top-0 z-10 h-screen w-screen bg-dark-mainBackground opacity-50"
               />
               <TaskModal
                 labels={labels}
@@ -340,11 +340,11 @@ export default function KanbanBoard({
                 updateTaskLabels={updateTaskLabels}
                 handleTaskClick={handleTaskClick}
                 subtasks={tasks.filter(
-                  (task) => task.parentTaskId === activeTask.id
+                  (task) => task.parentTaskId === activeTask.id,
                 )}
               />
             </div>,
-            document.body
+            document.body,
           )}
       </div>
       {/* Task Modal */}

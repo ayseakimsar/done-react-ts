@@ -87,7 +87,7 @@ export default function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className=" w-[300px] h-[80vh] rounded-xl bg-slate-200 "
+        className="h-[80vh] w-[300px] rounded-xl bg-slate-200"
       />
     );
   }
@@ -98,12 +98,12 @@ export default function ColumnContainer({
       onMouseLeave={handleMouseLeavesColumn}
       ref={setNodeRef}
       style={style}
-      className=" flex flex-col w-[320px] h-[100%]"
+      className="flex h-[100%] w-[320px] flex-col"
     >
       {/* Column Title */}
       <div className="flex justify-between p-6 text-[#596678] dark:text-slate-200">
         <div
-          className="cursor-grab tracking-[0.2em] text-[13px] uppercase font-semibold"
+          className="cursor-grab text-[13px] font-semibold uppercase tracking-[0.2em]"
           {...attributes}
           {...listeners}
         >
@@ -135,7 +135,7 @@ export default function ColumnContainer({
         )}
       </div>
       {/* Column Content */}
-      <div className="items-center h-[70%] flex flex-col gap-3 overflow-y-hidden hover:overflow-y-auto">
+      <div className="flex h-[70%] flex-col items-center gap-3 overflow-y-hidden hover:overflow-y-auto">
         <SortableContext items={tasksId}>
           {tasks.map(
             (task) =>
@@ -149,7 +149,7 @@ export default function ColumnContainer({
                   subtasks={allTasks.filter((t) => t.parentTaskId === task.id)}
                   onTaskClick={onTaskClick}
                 />
-              )
+              ),
           )}
         </SortableContext>
       </div>
@@ -157,7 +157,7 @@ export default function ColumnContainer({
       <button
         className={`${
           isColumnHovered ? `opacity-1` : "opacity-0"
-        }  px-5 transition-all  mt-[30px]  flex-end flex  gap-2 text-light-primaryText dark:text-dark-primaryText`}
+        } flex-end mt-[30px] flex gap-2 px-5 text-light-primaryText transition-all dark:text-dark-primaryText`}
         onClick={() => createTask(column.id, activeLabel?.id)}
       >
         <PlusIcon />

@@ -6,7 +6,7 @@ export default function DescriptionIcon() {
       viewBox="0 0 30 30"
       strokeWidth={1.2}
       stroke="#9199a5"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"

@@ -6,7 +6,7 @@ export default function TrashIcon() {
       viewBox="0 0 30 30"
       strokeWidth={1.5}
       stroke="#9199a5"
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"

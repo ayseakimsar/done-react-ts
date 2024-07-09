@@ -16,7 +16,7 @@ export default function Checkbox({
       viewBox={viewBox}
       strokeWidth={strokeWidth}
       stroke={color}
-      className="w-6 h-6"
+      className="h-6 w-6"
     >
       <path
         strokeLinecap="round"

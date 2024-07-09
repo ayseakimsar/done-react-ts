@@ -11,7 +11,7 @@ export default function CheckboxDone({ color = "#b5bbc3" }: Props) {
         viewBox="0 0 27 27"
         strokeWidth={1.8}
         stroke={color}
-        className="w-6 h-6"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"
