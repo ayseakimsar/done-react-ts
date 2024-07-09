@@ -1,12 +1,16 @@
-export default function CheckboxDone() {
+interface Props {
+  color?: string;
+}
+
+export default function CheckboxDone({ color = "#b5bbc3" }: Props) {
   return (
     <div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 27 27"
-        strokeWidth={1.2}
-        stroke="#6c7787"
+        strokeWidth={1.8}
+        stroke={color}
         className="w-6 h-6"
       >
         <path

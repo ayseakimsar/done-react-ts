@@ -1,13 +1,16 @@
 import Checkbox from "../../../icons/KanbanBoard/Checkbox";
 import DescriptionIcon from "../../../icons/SecondarySidebar/DescriptionIcon";
-import { Column, Id, Project, Task } from "../../../types";
+import { Column, Id, Label, Project, Task } from "../../../types";
 import SidebarHeader from "./SidebarHeader";
 import SidebarInfo from "./SidebarInfo";
 import SubtaskContainer from "./SubtaskContainer";
 import PlusIcon from "../../../icons/KanbanBoard/PlusIcon";
 import { useEffect, useRef, useState } from "react";
 import PriorityBox from "./PriorityBox";
+import LabelBox from "./LabelBox";
+import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
 interface Props {
+  labels: Label[];
   columns: Column[];
   task: Task;
   subtasks: Task[];
@@ -18,6 +21,7 @@ interface Props {
   handleTaskClick: (task: Task) => void;
   completeTask: (taskId: Id) => void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
+  updateTaskLabels: (taskId: Id, labelId: Id) => void;
 }
 
 export default function TaskModal({
@@ -25,13 +29,17 @@ export default function TaskModal({
   columns,
   subtasks,
   projects,
+  labels,
   createSubTask,
   deleteTask,
   updateTask,
   handleTaskClick,
   completeTask,
   updateTaskPriority,
+  updateTaskLabels,
 }: Props) {
+  console.log(labels);
+  const checkboxColor = findCheckBoxColor(task);
   const column: Column | null = task
     ? columns.find((c) => c.id === (task.columnId || null)) || null
     : null;
@@ -49,6 +57,8 @@ export default function TaskModal({
       taskInputRef.current.select();
     }
   }, [taskEditMode]);
+
+  console.log(task.labelIds);
 
   return (
     <div className="grid grid-cols-taskModal grid-rows-taskModal w-[800px] h-[700px] bg-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-2xl rounded-2xl z-20">
@@ -69,6 +79,11 @@ export default function TaskModal({
           <PriorityBox task={task} updateTaskPriority={updateTaskPriority} />
         </div>
         <SidebarHeader>Labels</SidebarHeader>
+        <LabelBox
+          task={task}
+          labels={labels}
+          updateTaskLabels={updateTaskLabels}
+        />
       </aside>
 
       <div className="px-10">
@@ -81,7 +96,7 @@ export default function TaskModal({
           className="flex items-center mt-7"
         >
           <div onClick={() => completeTask(task.id)}>
-            <Checkbox />
+            <Checkbox color={checkboxColor} />
           </div>
           {taskEditMode ? (
             <input

@@ -156,7 +156,5 @@ export const initialProjectData: Project[] = [
 export const initialLabelData: Label[] = [
   { id: 1212, title: "Work", type: "label" },
   { id: 1213, title: "Personal", type: "label" },
-  { id: 1214, title: "Urgent", type: "label" },
-  { id: 1215, title: "Shopping", type: "label" },
   { id: 1216, title: "Fitness", type: "label" },
 ];

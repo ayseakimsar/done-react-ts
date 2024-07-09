@@ -20,6 +20,7 @@ import TaskModal from "./TaskModal/TaskModal";
 
 interface Props {
   activeProject: Project | null;
+  labels: Label[];
   projects: Project[];
   tasks: Task[];
   labeledTasks: Task[] | null;
@@ -30,11 +31,13 @@ interface Props {
   activeLabel: Label | null | undefined;
   setActiveTask: (activeTask: Task | null | undefined) => Task[] | void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
+  updateTaskLabels: (taskId: Id, labelId: Id) => void;
 }
 
 export default function KanbanBoard({
   activeProject,
   activeLabel,
+  labels,
   projects,
   tasks,
   setTasks,
@@ -43,6 +46,7 @@ export default function KanbanBoard({
   activeTask,
   setActiveTask,
   updateTaskPriority,
+  updateTaskLabels,
   labeledTasks,
 }: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
@@ -324,6 +328,7 @@ export default function KanbanBoard({
                 className="w-screen h-screen bg-dark-mainBackground opacity-50 fixed top-0 left-0  z-10"
               />
               <TaskModal
+                labels={labels}
                 projects={projects}
                 columns={columns}
                 task={tasks.filter((task) => task.id === activeTask.id)[0]}
@@ -332,6 +337,7 @@ export default function KanbanBoard({
                 updateTask={updateTask}
                 completeTask={completeTask}
                 updateTaskPriority={updateTaskPriority}
+                updateTaskLabels={updateTaskLabels}
                 handleTaskClick={handleTaskClick}
                 subtasks={tasks.filter(
                   (task) => task.parentTaskId === activeTask.id

@@ -1,11 +1,13 @@
 interface Props {
   strokeWidth?: number;
   viewBox?: string;
+  color?: string;
 }
 
 export default function Checkbox({
-  strokeWidth = 1.2,
+  strokeWidth = 1.8,
   viewBox = "0 0 27 27",
+  color = "#b5bbc3",
 }: Props) {
   return (
     <svg
@@ -13,7 +15,7 @@ export default function Checkbox({
       fill="none"
       viewBox={viewBox}
       strokeWidth={strokeWidth}
-      stroke="#6c7787"
+      stroke={color}
       className="w-6 h-6"
     >
       <path

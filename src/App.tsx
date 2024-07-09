@@ -28,10 +28,11 @@ function App() {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
 
-  if (activeLabel)
-    console.log(
+  console.log(activeLabel?.title);
+  console.log(
+    activeLabel &&
       tasks.filter((task) => task.labelIds?.includes(activeLabel?.id))
-    );
+  );
 
   function createNewProject() {
     const newProject = {
@@ -105,6 +106,21 @@ function App() {
     setTasks(updatedTasks);
   }
 
+  function updateTaskLabels(taskId: Id, labelId: Id) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      if (task.labelIds?.includes(labelId)) return task;
+      return {
+        ...task,
+        labelIds: task.labelIds
+          ? [...task.labelIds, Number(labelId)]
+          : [Number(labelId)],
+      };
+    });
+
+    setTasks(updatedTasks);
+  }
+
   return (
     <div className="grid-kanban-board h-[100vh]">
       <Topbar activeProject={activeProject} activeLabel={activeLabel} />
@@ -120,6 +136,7 @@ function App() {
       <KanbanBoard
         activeLabel={activeLabel}
         activeProject={activeProject}
+        labels={labels}
         projects={projects}
         columns={columns}
         setColumns={setColumns}
@@ -128,6 +145,7 @@ function App() {
         activeTask={activeTask}
         setActiveTask={setActiveTask}
         updateTaskPriority={updateTaskPriority}
+        updateTaskLabels={updateTaskLabels}
         labeledTasks={
           activeLabel
             ? tasks.filter((task) => task.labelIds?.includes(activeLabel.id))

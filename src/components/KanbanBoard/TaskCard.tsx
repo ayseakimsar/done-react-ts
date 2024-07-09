@@ -6,6 +6,7 @@ import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
 import Checkbox from "../../icons/KanbanBoard/Checkbox";
 import CheckboxDone from "../../icons/KanbanBoard/CheckboxDone";
 import EditModeIcon from "../../icons/KanbanBoard/EditModeIcon";
+import { findCheckBoxColor } from "../../utils/findCheckboxColor";
 
 interface Props {
   task: Task;
@@ -28,6 +29,9 @@ export default function TaskCard({
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [isTaskHovered, setIsTaskHovered] = useState(false);
   const [editMode, setEditMode] = useState(false);
+
+  const checkboxColor = findCheckBoxColor(task);
+
   function handleMouseEntersTask() {
     setIsTaskHovered(true);
   }
@@ -101,7 +105,11 @@ export default function TaskCard({
           opacity: taskCompleted ? 0 : 1,
         }}
       >
-        {mouseEntersCheckbox ? <CheckboxDone /> : <Checkbox />}
+        {mouseEntersCheckbox ? (
+          <CheckboxDone color={checkboxColor} />
+        ) : (
+          <Checkbox color={checkboxColor} />
+        )}
       </div>
       <div className="pt-4 self-end font-semibold text-sm text-light-primaryText  dark:text-dark-primaryText h-[auto] ">
         {editMode ? (
