@@ -6,9 +6,9 @@ import SidebarInfo from "./SidebarInfo";
 import SubtaskContainer from "./SubtaskContainer";
 import PlusIcon from "../../../icons/KanbanBoard/PlusIcon";
 import { useEffect, useRef, useState } from "react";
-import PriorityBox from "./PriorityBox";
 import LabelBox from "./LabelBox";
 import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
+import PriorityBox from "./PriorityBox";
 interface Props {
   labels: Label[];
   columns: Column[];
@@ -65,7 +65,7 @@ export default function TaskModal({
       <header className="col-span-full flex h-20 border-collapse items-center border-b-2 px-8 text-[0.8em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
         {project ? project.title : "-"}{" "}
       </header>
-      <aside className="flex flex-col gap-8 border-r-2 p-7">
+      <aside className="flex flex-col gap-8 border-r-2 p-5">
         <div className="flex flex-col gap-1">
           <SidebarHeader>Parent</SidebarHeader>
           <SidebarInfo>{project ? project.title : "-"}</SidebarInfo>
@@ -75,7 +75,6 @@ export default function TaskModal({
           <SidebarInfo>Today</SidebarInfo>
         </div>
         <div className="flex flex-col gap-1">
-          <SidebarHeader>Priority</SidebarHeader>
           <PriorityBox task={task} updateTaskPriority={updateTaskPriority} />
         </div>
         <SidebarHeader>Labels</SidebarHeader>
@@ -100,7 +99,7 @@ export default function TaskModal({
           </div>
           {taskEditMode ? (
             <input
-              className="/* Border radius */ /* Border color */ /* Full width */ /* Font size */ /* Remove default focus */ /* Change color on focus */ w-full rounded-md border border-gray-300 p-1 text-base outline focus:border-slate-300 focus:outline-none"
+              className="/* Border radius */ /* Border color */ /* Full width */ /* Font size */ /* Remove default */ /* Change color on */ focus w-full rounded-md border border-gray-300 p-1 text-base outline focus:border-slate-300 focus:outline-none"
               ref={taskInputRef}
               value={task.content}
               onChange={(e) => {

@@ -28,12 +28,6 @@ function App() {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
 
-  console.log(activeLabel?.title);
-  console.log(
-    activeLabel &&
-      tasks.filter((task) => task.labelIds?.includes(activeLabel?.id)),
-  );
-
   function createNewProject() {
     const newProject = {
       id: generateId(),
