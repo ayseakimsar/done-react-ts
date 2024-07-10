@@ -20,11 +20,11 @@ export default function PriorityBox({ task, updateTaskPriority }: Props) {
   };
 
   return (
-    <div className="">
+    <div>
       <div
         tabIndex={0}
         role="button"
-        className="btn h-[10px] min-h-8 w-[170px] justify-between border-none bg-light-secondarySidebar p-0 px-3 text-right text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight shadow-none hover:bg-gray-100"
+        className="btn h-[10px] min-h-6 w-[170px] justify-between border-none bg-light-secondarySidebar p-0 px-3 text-right text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight shadow-none hover:bg-gray-100"
         onClick={() => toggleDropdown()}
       >
         Priority

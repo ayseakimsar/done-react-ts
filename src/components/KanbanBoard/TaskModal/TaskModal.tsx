@@ -6,9 +6,9 @@ import SidebarInfo from "./SidebarInfo";
 import SubtaskContainer from "./SubtaskContainer";
 import PlusIcon from "../../../icons/KanbanBoard/PlusIcon";
 import { useEffect, useRef, useState } from "react";
-import LabelBox from "./LabelBox";
 import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
 import PriorityBox from "./PriorityBox";
+import LabelBox from "./LabelBox";
 interface Props {
   labels: Label[];
   columns: Column[];
@@ -77,7 +77,7 @@ export default function TaskModal({
         <div className="flex flex-col gap-1">
           <PriorityBox task={task} updateTaskPriority={updateTaskPriority} />
         </div>
-        <SidebarHeader>Labels</SidebarHeader>
+
         <LabelBox
           task={task}
           labels={labels}

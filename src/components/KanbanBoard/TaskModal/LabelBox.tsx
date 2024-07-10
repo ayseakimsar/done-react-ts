@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Id, Label, Task } from "../../../types";
+import DropdownIcon from "../../../icons/KanbanBoard/Dropdown";
 
 interface Props {
   task: Task;
@@ -8,31 +9,45 @@ interface Props {
 }
 
 export default function LabelBox({ task, labels, updateTaskLabels }: Props) {
-  // Initialize selectedLabel with the first label's id if available, otherwise an empty string
-  const [selectedLabel, setSelectedLabel] = useState<string>();
-  console.log(task.labelIds);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState<number>();
 
-  // Use useEffect to call updateTaskLabels only when selectedLabel changes
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   useEffect(() => {
     if (selectedLabel) {
       updateTaskLabels(task.id, selectedLabel);
+      toggleDropdown();
     }
   }, [selectedLabel]);
 
   return (
     <div>
-      <select
-        className="h-[auto] text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText"
-        value={selectedLabel}
-        onChange={(e) => setSelectedLabel(e.target.value)}
+      <div
+        tabIndex={0}
+        role="button"
+        className="btn h-[10px] min-h-6 w-[170px] justify-between border-none bg-light-secondarySidebar p-0 px-3 text-right text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight shadow-none hover:bg-gray-100"
+        onClick={() => toggleDropdown()}
       >
-        <option></option>
-        {labels.map((label) => (
-          <option key={label.id} value={label.id}>
-            {label.title}
-          </option>
-        ))}
-      </select>
+        Labels
+        <DropdownIcon />
+      </div>
+
+      {isOpen && (
+        <ul className="menu dropdown-content absolute z-[1] w-52 rounded-box bg-light-secondarySidebar p-2 shadow">
+          {labels.map((label) => (
+            <li key={label.id}>
+              <a
+                onClick={() => setSelectedLabel(Number(label.id))}
+                className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              >
+                {label.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
