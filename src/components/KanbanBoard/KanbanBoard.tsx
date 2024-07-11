@@ -14,9 +14,9 @@ import {
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import TaskCard from "./TaskCard";
-import { columnColors } from "../../columnColors";
 import { generateId } from "../../utils/generateId";
 import TaskModal from "./TaskModal/TaskModal";
+import { generateColor } from "../../utils/generateColor";
 
 interface Props {
   activeProject: Project | null;
@@ -32,6 +32,7 @@ interface Props {
   setActiveTask: (activeTask: Task | null | undefined) => Task[] | void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
   updateTaskLabels: (taskId: Id, labelId: Id) => void;
+  deleteLabelInTask: (taskId: Id, labelId: Id) => void;
 }
 
 export default function KanbanBoard({
@@ -48,6 +49,7 @@ export default function KanbanBoard({
   updateTaskPriority,
   updateTaskLabels,
   labeledTasks,
+  deleteLabelInTask,
 }: Props) {
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
@@ -83,16 +85,11 @@ export default function KanbanBoard({
     const columnToAdd: Column = {
       id: generateId(),
       title: `New Column`,
-      color: generateColor(),
+      color: generateColor("column"),
       projectId: projectId,
       labelId: null,
     };
     setColumns([...columns, columnToAdd]);
-  }
-
-  function generateColor() {
-    const index = Math.round(Math.random() * columnColors.length);
-    return columnColors[index];
   }
 
   function updateColumn(columnId: Id, title: string) {
@@ -166,7 +163,6 @@ export default function KanbanBoard({
       if (task.id === taskId && task.completed === false)
         return { ...task, completed: true };
     });
-
     setTasks(newTasks);
   }
 
@@ -329,6 +325,7 @@ export default function KanbanBoard({
               />
               <TaskModal
                 labels={labels}
+                deleteLabelInTask={deleteLabelInTask}
                 projects={projects}
                 columns={columns}
                 task={tasks.filter((task) => task.id === activeTask.id)[0]}

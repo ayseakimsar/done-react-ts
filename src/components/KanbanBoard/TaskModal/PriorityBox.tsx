@@ -1,6 +1,8 @@
 import DropdownIcon from "../../../icons/KanbanBoard/Dropdown";
+import PriorityIcon from "../../../icons/KanbanBoard/PriorityIcon";
 import { Id, Task } from "../../../types";
 import { useState } from "react";
+import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
 
 interface Props {
   task: Task;
@@ -19,6 +21,8 @@ export default function PriorityBox({ task, updateTaskPriority }: Props) {
     setIsOpen(false);
   };
 
+  const priorityColor = findCheckBoxColor(task);
+
   return (
     <div>
       <div
@@ -35,38 +39,39 @@ export default function PriorityBox({ task, updateTaskPriority }: Props) {
           <li>
             <a
               onClick={() => handlePriorityChange("high")}
-              className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
-              High
+              <PriorityIcon color="#fca5a5" /> <span>High</span>
             </a>
           </li>
           <li>
             <a
               onClick={() => handlePriorityChange("medium")}
-              className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
-              Medium
+              <PriorityIcon color="#fbbf24" /> <span>Medium</span>
             </a>
           </li>
           <li>
             <a
               onClick={() => handlePriorityChange("low")}
-              className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
-              Low
+              <PriorityIcon color="#93c5fd" /> <span>Low</span>
             </a>
           </li>
           <li>
             <a
               onClick={() => handlePriorityChange("none")}
-              className="block px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex px-4 py-2 text-sm leading-5 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
-              None
+              <PriorityIcon color="#b5bbc3" /> <span>None</span>
             </a>
           </li>
         </ul>
       )}
-      <div className="h-[auto] px-3 text-[14px] font-medium capitalize tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText">
+      <div className="flex h-[auto] items-center gap-2 px-3 text-[14px] font-medium capitalize tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText">
+        <PriorityIcon color={priorityColor} />
         {task.priority}
       </div>
     </div>

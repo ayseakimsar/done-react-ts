@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
 import { Id, Label, Task } from "../../../types";
 import DropdownIcon from "../../../icons/KanbanBoard/Dropdown";
+import RemoveLabelIcon from "../../../icons/KanbanBoard/RemoveLabelIcon";
 
 interface Props {
   task: Task;
   labels: Label[];
   updateTaskLabels: (taskId: Id, labelId: Id) => void;
+  deleteLabelInTask: (taskId: Id, labelId: Id) => void;
 }
 
-export default function LabelBox({ task, labels, updateTaskLabels }: Props) {
+export default function LabelBox({
+  task,
+  labels,
+  updateTaskLabels,
+  deleteLabelInTask,
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<number>();
 
@@ -48,6 +55,20 @@ export default function LabelBox({ task, labels, updateTaskLabels }: Props) {
           ))}
         </ul>
       )}
+      <div className="mt-2">
+        {labels
+          .filter((label) => task.labelIds?.includes(label.id))
+          .map((label) => (
+            <div
+              className={`flex items-center justify-between rounded-lg ${label.color} m-[0.4rem] h-[auto] p-1 px-3 text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText`}
+            >
+              {label.title}
+              <button onClick={() => deleteLabelInTask(task.id, label.id)}>
+                <RemoveLabelIcon />
+              </button>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

@@ -22,6 +22,7 @@ interface Props {
   completeTask: (taskId: Id) => void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
   updateTaskLabels: (taskId: Id, labelId: Id) => void;
+  deleteLabelInTask: (taskId: Id, labelId: Id) => void;
 }
 
 export default function TaskModal({
@@ -37,6 +38,7 @@ export default function TaskModal({
   completeTask,
   updateTaskPriority,
   updateTaskLabels,
+  deleteLabelInTask,
 }: Props) {
   console.log(labels);
   const checkboxColor = findCheckBoxColor(task);
@@ -82,6 +84,7 @@ export default function TaskModal({
           task={task}
           labels={labels}
           updateTaskLabels={updateTaskLabels}
+          deleteLabelInTask={deleteLabelInTask}
         />
       </aside>
 

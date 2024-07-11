@@ -14,6 +14,7 @@ import {
 import { generateId } from "./utils/generateId";
 import "./index.css";
 import { columnColors } from "./columnColors";
+import { generateColor } from "./utils/generateColor";
 
 function App() {
   const [columns, setColumns] = useState<Column[]>(initialColumnData);
@@ -27,6 +28,7 @@ function App() {
   });
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
+  console.log(labels);
 
   function createNewProject() {
     const newProject = {
@@ -66,6 +68,7 @@ function App() {
       id: generateId(),
       title: `Label ${labels.length + 1} `,
       type: "label",
+      color: generateColor("label"),
     };
 
     const labelColumn: Column = {
@@ -114,6 +117,19 @@ function App() {
 
     setTasks(updatedTasks);
   }
+  function deleteLabelInTask(taskId: Id, labelId: Id) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      return {
+        ...task,
+        labelIds: task.labelIds
+          ? task.labelIds?.filter((label) => label !== labelId)
+          : task.labelIds,
+      };
+    });
+
+    setTasks(updatedTasks);
+  }
 
   return (
     <div className="grid-kanban-board h-[100vh]">
@@ -140,6 +156,7 @@ function App() {
         setActiveTask={setActiveTask}
         updateTaskPriority={updateTaskPriority}
         updateTaskLabels={updateTaskLabels}
+        deleteLabelInTask={deleteLabelInTask}
         labeledTasks={
           activeLabel
             ? tasks.filter((task) => task.labelIds?.includes(activeLabel.id))

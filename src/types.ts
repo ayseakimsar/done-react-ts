@@ -29,4 +29,5 @@ export type Label = {
   id: Id;
   title: string;
   type: string;
+  color: string;
 };
