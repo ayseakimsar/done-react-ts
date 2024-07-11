@@ -63,6 +63,32 @@ function App() {
     setProjects([...projects, newProject]);
   }
 
+  function updateProjectTitle(projectId: Id, newTitle: string) {
+    const updatedProjects = projects.map((project) => {
+      if (project.id !== projectId) return project;
+      return { ...project, title: newTitle };
+    });
+
+    setProjects(updatedProjects);
+  }
+
+  function deleteProject(projectId: Id) {
+    const updatedProjects = projects.filter(
+      (project) => project.id !== projectId,
+    );
+
+    setProjects(updatedProjects);
+  }
+
+  function updateLabelTitle(labelId: Id, newTitle: string) {
+    const updatedLabels = labels.map((label) => {
+      if (label.id !== labelId) return label;
+      return { ...label, title: newTitle };
+    });
+
+    setLabels(updatedLabels);
+  }
+
   function createNewLabel() {
     const newLabel = {
       id: generateId(),
@@ -82,6 +108,12 @@ function App() {
     setColumns([...columns, labelColumn]);
 
     setLabels([...labels, newLabel]);
+  }
+
+  function deleteLabel(labelId: Id) {
+    const updatedLabels = labels.filter((label) => label.id !== labelId);
+    setLabels(updatedLabels);
+    console.log("a label is deleted!");
   }
 
   function handleProjectSelection(project: Project) {
@@ -117,6 +149,7 @@ function App() {
 
     setTasks(updatedTasks);
   }
+
   function deleteLabelInTask(taskId: Id, labelId: Id) {
     const updatedTasks = tasks.map((task) => {
       if (task.id !== taskId) return task;
@@ -139,9 +172,13 @@ function App() {
         handleProjectSelection={handleProjectSelection}
         handleLabelSelection={handleLabelSelection}
         createNewProject={createNewProject}
+        deleteProject={deleteProject}
+        deleteLabel={deleteLabel}
         createNewLabel={createNewLabel}
         projects={projects}
         labels={labels}
+        updateProjectTitle={updateProjectTitle}
+        updateLabelTitle={updateLabelTitle}
       />
       <KanbanBoard
         activeLabel={activeLabel}

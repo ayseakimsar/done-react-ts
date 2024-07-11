@@ -36,8 +36,6 @@ export default function ColumnContainer({
   onTaskClick,
   activeLabel,
 }: Props) {
-  // Use useEffect to focus the input element when columnEditMode is true
-
   const {
     setNodeRef,
     attributes,

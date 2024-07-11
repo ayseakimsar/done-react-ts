@@ -1,40 +1,18 @@
-interface Props {
-  color: string;
-}
-export default function ProjectIcon({ color }: Props) {
+export default function ProjectIcon() {
   return (
     <svg
-      width="19"
-      height="19"
-      viewBox="0 0 20 20"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="size-5"
     >
       <path
-        d="M0.75 5C0.75 2.65279 2.65279 0.75 5 0.75H14C16.3472 0.75 18.25 2.65279 18.25 5V14C18.25 16.3472 16.3472 18.25 14 18.25H5C2.65279 18.25 0.75 16.3472 0.75 14V5Z"
-        fill="white"
-        stroke={color}
-        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"
       />
-      <path d="M11.75 1L11.75 17.5" stroke={color} strokeWidth="1.5" />
-      <line
-        x1="11"
-        y1="5.25"
-        x2="18"
-        y2="5.25"
-        stroke={color}
-        strokeWidth="1.5"
-      />
-      <line
-        x1="11"
-        y1="9.25"
-        x2="18"
-        y2="9.25"
-        stroke={color}
-        strokeWidth="1.5"
-      />
-      <path d="M11 13H18.1881" stroke={color} strokeWidth="1.5" />
-      <line x1="11" y1="8.75" y2="8.75" stroke={color} strokeWidth="1.5" />
     </svg>
   );
 }

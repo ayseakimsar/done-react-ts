@@ -139,8 +139,6 @@ export default function KanbanBoard({
   }
 
   function updateTask(taskId: Id, content: string) {
-    // const taskToUpdate = tasks.filter((task) => task.id === taskId);
-
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) {
         return task;
