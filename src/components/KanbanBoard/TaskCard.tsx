@@ -111,7 +111,7 @@ export default function TaskCard({
           <Checkbox color={checkboxColor} />
         )}
       </div>
-      <div className="h-[auto] self-end pt-4 text-sm font-semibold text-light-primaryText dark:text-dark-primaryText">
+      <div className="h-[auto] self-end pt-4 text-sm font-[500] text-light-primaryText dark:text-dark-primaryText">
         {editMode ? (
           <input
             value={task.content}
@@ -125,10 +125,12 @@ export default function TaskCard({
           task.content
         )}
       </div>
-      <div className="col-start-2 row-start-2 self-start text-xs text-light-primaryTextLight dark:text-dark-primaryText">
-        {subtasks.filter((subtask) => subtask.completed === true).length} of{" "}
-        {subtasks.length} subtasks
-      </div>
+      {
+        <div className="col-start-2 row-start-2 self-start text-xs text-light-primaryTextLight dark:text-dark-primaryText">
+          {subtasks.filter((subtask) => subtask.completed === true).length} of{" "}
+          {subtasks.length} subtasks
+        </div>
+      }
       <div className="col-start-3 row-start-1 row-end-3 items-center">
         <button
           className={` ${

@@ -5,8 +5,8 @@ interface Props {
 }
 
 export default function Checkbox({
-  strokeWidth = 1.8,
-  viewBox = "0 0 27 27",
+  strokeWidth = 1.5,
+  viewBox = "0 0 24 24",
   color = "#b5bbc3",
 }: Props) {
   return (

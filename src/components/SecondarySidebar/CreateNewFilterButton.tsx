@@ -12,7 +12,7 @@ export default function CreateNewProjectButton({
 }: Props) {
   return (
     <button
-      className="flex items-center gap-3 px-3 py-2 text-[0.83em] font-semibold tracking-wide text-light-brand"
+      className="flex items-center gap-3 py-2 pl-5 text-[0.83em] font-semibold tracking-wide text-light-brand"
       onClick={createNewFilter}
     >
       {filterType === "project" ? (

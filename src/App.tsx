@@ -31,9 +31,10 @@ function App() {
   console.log(labels);
 
   function createNewProject() {
+    console.log(projects);
     const newProject = {
       id: generateId(),
-      title: `Project ${projects.length + 1}`,
+      title: `Project ${projects.length - 2}`,
       type: "project",
     };
     const todoColumn = {

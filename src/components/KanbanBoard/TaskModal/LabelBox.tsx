@@ -18,7 +18,7 @@ export default function LabelBox({
 }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<number>();
-
+  console.log(labels);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };

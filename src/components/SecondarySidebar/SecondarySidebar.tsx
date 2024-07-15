@@ -6,6 +6,7 @@ import SidebarMainFilter from "./SidebarMainFilter";
 import SidebarSecondaryFilter from "./SidebarSecondaryFilter";
 import CreateNewFilterButton from "./CreateNewFilterButton";
 import SecondarySidebarHeader from "./SecondarySidebarHeader";
+import Logo from "../../icons/Logo";
 interface Props {
   handleProjectSelection: (project: Project) => void;
   handleLabelSelection: (label: Label) => void;
@@ -32,9 +33,10 @@ export default function SecondarySidebar({
   labels,
 }: Props) {
   return (
-    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col gap-[4.2rem] border-r-[1px] border-gray-200 bg-light-secondarySidebar pt-[3rem]">
+    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col border-r-[1px] border-gray-200 bg-light-secondarySidebar pl-3 pt-[1.5rem]">
+      <Logo />
       {/*Main filters*/}
-      <div className="flex flex-col gap-4">
+      <div className="mb-14 mt-10 flex flex-col gap-4">
         <SecondarySidebarHeader>To Do</SecondarySidebarHeader>
         <div className="flex flex-col gap-3">
           <SidebarMainFilter
@@ -58,7 +60,7 @@ export default function SecondarySidebar({
       {/*Main filters*/}
 
       {/*Projects*/}
-      <div className="flex flex-col gap-5">
+      <div className="mb-14 flex flex-col gap-4">
         <SecondarySidebarHeader>Projects</SecondarySidebarHeader>
         <div className="flex flex-col">
           {projects.map((project) => {
@@ -85,7 +87,7 @@ export default function SecondarySidebar({
       {/*Projects*/}
 
       {/*Filters*/}
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-4">
         <SecondarySidebarHeader>Filters & Tags</SecondarySidebarHeader>
 
         <div className="flex flex-col">

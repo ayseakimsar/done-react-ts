@@ -48,11 +48,12 @@ export default function SidebarProjectFilter({
       onMouseEnter={() => setIsFilterHovered(true)}
       onMouseLeave={() => setIsFilterHovered(false)}
     >
-      <div className="flex h-10 items-center justify-between gap-3 px-3 py-3 text-[0.83em] font-semibold tracking-wide text-light-primaryTextLight transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
+      <div className="flex h-10 items-center justify-between gap-3 px-3 pb-3 pl-5 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
         <div className="flex items-center gap-2">
           <div>
             {filter.type === "project" ? <ProjectIcon /> : <LabelIcon />}
           </div>
+
           <div
             className="w-[130px] text-start"
             onDoubleClick={() => setEditMode(true)}
