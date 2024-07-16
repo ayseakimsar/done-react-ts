@@ -33,7 +33,7 @@ export default function SecondarySidebar({
   labels,
 }: Props) {
   return (
-    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col border-r-[1px] border-gray-200 bg-light-secondarySidebar pl-3 pt-[1.5rem]">
+    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col border-r-[1px] border-gray-200 bg-light-secondarySidebar pt-[1.5rem]">
       <Logo />
       {/*Main filters*/}
       <div className="mb-14 mt-10 flex flex-col gap-4">
