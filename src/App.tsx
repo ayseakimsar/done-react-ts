@@ -28,7 +28,6 @@ function App() {
   });
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
-  console.log(labels);
 
   function createNewProject() {
     console.log(projects);

@@ -48,6 +48,7 @@ export default function KanbanBoard({
   setActiveTask,
   updateTaskPriority,
   updateTaskLabels,
+
   labeledTasks,
   deleteLabelInTask,
 }: Props) {
@@ -137,6 +138,7 @@ export default function KanbanBoard({
       parentTaskId: null,
       completed: false,
       priority: "none",
+      description: "",
     };
     setTasks([...tasks, newTask]);
   }
@@ -151,6 +153,7 @@ export default function KanbanBoard({
       parentTaskId: taskId,
       completed: false,
       priority: "none",
+      description: "",
     };
 
     setTasks([...tasks, newSubTask]);
@@ -164,6 +167,14 @@ export default function KanbanBoard({
     });
 
     setTasks(newTasks);
+  }
+  function updateTaskDescription(taskId: Id, content: string) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      else return { ...task, description: content };
+    });
+
+    setTasks(updatedTasks);
   }
 
   function deleteTask(taskId: Id) {
@@ -348,6 +359,7 @@ export default function KanbanBoard({
                 createSubTask={createSubTask}
                 deleteTask={deleteTask}
                 updateTask={updateTask}
+                updateTaskDescription={updateTaskDescription}
                 completeTask={completeTask}
                 updateTaskPriority={updateTaskPriority}
                 updateTaskLabels={updateTaskLabels}

@@ -23,6 +23,7 @@ export type Task = {
   labelIds: Id[] | null;
   completed: boolean;
   priority: string;
+  description: string;
 };
 
 export type Label = {

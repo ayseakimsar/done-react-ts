@@ -1,5 +1,5 @@
 import Checkbox from "../../../icons/KanbanBoard/Checkbox";
-import DescriptionIcon from "../../../icons/SecondarySidebar/DescriptionIcon";
+import DescriptionIcon from "../../../icons/KanbanBoard/DescriptionIcon";
 import { Column, Id, Label, Project, Task } from "../../../types";
 import SidebarHeader from "./SidebarHeader";
 import SidebarInfo from "./SidebarInfo";
@@ -18,6 +18,7 @@ interface Props {
   createSubTask: (taskId: Id) => void;
   deleteTask: (taskId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
+  updateTaskDescription: (taskId: Id, content: string) => void;
   handleTaskClick: (task: Task) => void;
   completeTask: (taskId: Id) => void;
   updateTaskPriority: (taskId: Id, priority: string) => void;
@@ -34,13 +35,13 @@ export default function TaskModal({
   createSubTask,
   deleteTask,
   updateTask,
+  updateTaskDescription,
   handleTaskClick,
   completeTask,
   updateTaskPriority,
   updateTaskLabels,
   deleteLabelInTask,
 }: Props) {
-  console.log(labels);
   const checkboxColor = findCheckBoxColor(task);
   const column: Column | null = task
     ? columns.find((c) => c.id === (task.columnId || null)) || null
@@ -52,7 +53,9 @@ export default function TaskModal({
   }
 
   const [taskEditMode, setTaskEditMode] = useState(false);
+  const [descriptionEditMode, setDescriptionEditMode] = useState(false);
   const taskInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (taskEditMode && taskInputRef.current) {
@@ -60,7 +63,11 @@ export default function TaskModal({
     }
   }, [taskEditMode]);
 
-  console.log(task.labelIds);
+  useEffect(() => {
+    if (descriptionEditMode && descriptionInputRef.current) {
+      descriptionInputRef.current.select();
+    }
+  }, [descriptionEditMode]);
 
   return (
     <div className="absolute left-1/2 top-1/2 z-20 grid h-[700px] w-[800px] -translate-x-1/2 -translate-y-1/2 transform grid-cols-taskModal grid-rows-taskModal rounded-2xl bg-white shadow-2xl">
@@ -95,32 +102,57 @@ export default function TaskModal({
           onKeyDown={(e) => {
             if (e.key === "Enter") setTaskEditMode(false);
           }}
-          className="mt-7 flex items-center"
+          className="mt-7 flex items-center gap-3"
         >
-          <div onClick={() => completeTask(task.id)}>
+          <div className="h-10" onClick={() => completeTask(task.id)}>
             <Checkbox color={checkboxColor} />
           </div>
-          {taskEditMode ? (
-            <input
-              className="/* Border radius */ /* Border color */ /* Full width */ /* Font size */ /* Remove default */ /* Change color on */ focus w-full rounded-md border border-gray-300 p-1 text-base outline focus:border-slate-300 focus:outline-none"
-              ref={taskInputRef}
-              value={task.content}
-              onChange={(e) => {
-                updateTask(task.id, e.target.value);
-              }}
-              onBlur={() => setTaskEditMode(false)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") setTaskEditMode(false);
-              }}
-            />
-          ) : (
-            task.content
-          )}
+          <div className="h-10">
+            {taskEditMode ? (
+              <input
+                className="h-7 w-full rounded-md border border-gray-300 bg-white p-1 text-base text-light-primaryText outline focus:border-slate-300 focus:outline-none dark:text-dark-primaryText"
+                ref={taskInputRef}
+                value={task.content}
+                onChange={(e) => {
+                  updateTask(task.id, e.target.value);
+                }}
+                onBlur={() => setTaskEditMode(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setTaskEditMode(false);
+                }}
+              />
+            ) : (
+              <div className="text-light-primaryText dark:text-dark-primaryText">
+                {task.content}
+              </div>
+            )}
+          </div>
         </div>
-        <div className="mt-2 flex gap-1">
+        <div className="flex items-center gap-1">
           <DescriptionIcon />
-          <span className="h-[auto] text-xs font-light tracking-wide text-light-primaryText dark:text-dark-primaryText">
-            Description
+
+          <span
+            onClick={() => setDescriptionEditMode(true)}
+            className="h-[auto] text-xs tracking-wide text-light-primaryTextLight dark:text-dark-primaryText"
+          >
+            {descriptionEditMode ? (
+              <input
+                className="w-full rounded-md border border-gray-300 bg-white p-1 text-xs tracking-wide text-light-primaryText focus:border-slate-300 focus:outline-none dark:text-dark-primaryText"
+                ref={descriptionInputRef}
+                value={task.description}
+                onChange={(e) => {
+                  updateTaskDescription(task.id, e.target.value);
+                }}
+                onBlur={() => setDescriptionEditMode(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") setDescriptionEditMode(false);
+                }}
+              />
+            ) : task.description === "" ? (
+              "Description"
+            ) : (
+              task.description
+            )}
           </span>
         </div>
         <div className="mt-5 text-[10px] font-light uppercase tracking-[0.25em] text-light-primaryText dark:text-dark-primaryText">

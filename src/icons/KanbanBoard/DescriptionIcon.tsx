@@ -4,9 +4,9 @@ export default function DescriptionIcon() {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 30 30"
-      strokeWidth={1.2}
+      strokeWidth={2}
       stroke="#9199a5"
-      className="h-6 w-6"
+      className="mt-1 h-7 w-7"
     >
       <path
         strokeLinecap="round"
