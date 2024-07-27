@@ -1,11 +1,15 @@
-export default function LabelIcon() {
+interface Props {
+  color?: string;
+}
+
+export default function LabelIcon({ color = "#b5bbc3" }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={2.2}
-      stroke="currentColor"
+      stroke={color}
       className="size-5"
     >
       <path

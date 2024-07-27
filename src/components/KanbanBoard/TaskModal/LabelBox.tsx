@@ -55,13 +55,14 @@ export default function LabelBox({
           ))}
         </ul>
       )}
-      <div className="mt-2">
+      <div className="mt-5">
         {labels
           .filter((label) => task.labelIds?.includes(label.id))
           .map((label) => (
             <div
               key={label.id}
-              className={`flex items-center justify-between rounded-lg bg-[${label.color}] m-[0.4rem] h-[auto] p-1 px-3 text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText`}
+              className={`m-[0.4rem] flex h-[auto] items-center justify-between rounded-lg p-1 px-3 text-[14px] font-medium tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText`}
+              style={{ backgroundColor: label.color }}
             >
               {label.title}
               <button onClick={() => deleteLabelInTask(task.id, label.id)}>

@@ -70,7 +70,7 @@ export default function PriorityBox({ task, updateTaskPriority }: Props) {
           </li>
         </ul>
       )}
-      <div className="flex h-[auto] items-center gap-2 px-3 text-[14px] font-medium capitalize tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText">
+      <div className="mt-3 flex h-[auto] items-center gap-2 px-3 text-[14px] font-medium capitalize tracking-[0.07em] text-light-primaryText dark:text-dark-primaryText">
         <PriorityIcon color={priorityColor} />
         {task.priority}
       </div>

@@ -88,7 +88,7 @@ export default function TaskCard({
       {...attributes}
       {...listeners}
       style={style}
-      className="grid h-[auto] min-h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText shadow-md dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
+      className="grid h-[auto] min-h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText shadow-md focus:outline-none dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
     >
       <div
         onClick={(e) => {

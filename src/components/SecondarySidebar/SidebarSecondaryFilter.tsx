@@ -3,6 +3,7 @@ import LabelIcon from "../../icons/SecondarySidebar/LabelIcon";
 import ProjectIcon from "../../icons/SecondarySidebar/ProjectIcon";
 import { Id, Label, Project } from "../../types";
 import TrashIcon from "../../icons/KanbanBoard/TrashIcon";
+import { labelColors } from "../../labelColors";
 
 interface Props {
   filter: Project | Label;
@@ -24,6 +25,7 @@ export default function SidebarProjectFilter({
   const [editMode, setEditMode] = useState(false);
   const [isFilterHovered, setIsFilterHovered] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
 
   useEffect(() => {
     if (editMode && inputRef.current) {
@@ -48,11 +50,24 @@ export default function SidebarProjectFilter({
       onMouseEnter={() => setIsFilterHovered(true)}
       onMouseLeave={() => setIsFilterHovered(false)}
     >
-      <div className="flex h-10 items-center justify-between gap-3 px-3 pl-7 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
+      <div className="flex h-10 items-center justify-between px-3 pl-7 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
         <div className="flex items-center gap-2">
-          <div>
+          <div
+            role="button"
+            tabIndex={0}
+            className=""
+            onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
+            onBlur={() => setIsColorPickerOpen(false)}
+          >
             {filter.type === "project" ? <ProjectIcon /> : <LabelIcon />}
           </div>
+          {isColorPickerOpen && (
+            <ul className="bg- menu dropdown-content absolute w-52 rounded-box bg-[#458239] p-2 shadow">
+              {labelColors.map((col) => (
+                <li role="button" className={`h-3 w-3 bg-[#326]`}></li>
+              ))}{" "}
+            </ul>
+          )}
 
           <div
             className="w-[130px] text-start"

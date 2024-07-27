@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Column, Id, Label, Project, Task } from "../../types";
 import ColumnContainer from "./ColumnContainer";
 import {
@@ -80,6 +80,24 @@ export default function KanbanBoard({
     : activeLabel
       ? filteredColumnsByFilter
       : columns;
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setActiveTask(null);
+      }
+    };
+
+    // Add event listener when modal is active
+    if (activeTask) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    // Clean up event listener when component unmounts or modal is closed
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeTask]);
 
   function createNewColumn(projectId: Id = activeProject?.id || 0) {
     const columnToAdd: Column = {
