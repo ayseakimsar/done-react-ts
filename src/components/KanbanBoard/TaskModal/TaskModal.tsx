@@ -15,6 +15,8 @@ interface Props {
   task: Task;
   subtasks: Task[];
   projects: Project[];
+  parentProject: Project | undefined;
+  parentTaskList: Task[] | undefined;
   createSubTask: (taskId: Id) => void;
   deleteTask: (taskId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
@@ -24,14 +26,15 @@ interface Props {
   updateTaskPriority: (taskId: Id, priority: string) => void;
   updateTaskLabels: (taskId: Id, labelId: Id) => void;
   deleteLabelInTask: (taskId: Id, labelId: Id) => void;
+  setActiveTask: (activeTask: Task | null | undefined) => Task[] | void;
 }
 
 export default function TaskModal({
   task,
-  columns,
   subtasks,
-  projects,
   labels,
+  parentProject,
+  parentTaskList,
   createSubTask,
   deleteTask,
   updateTask,
@@ -41,16 +44,9 @@ export default function TaskModal({
   updateTaskPriority,
   updateTaskLabels,
   deleteLabelInTask,
+  setActiveTask,
 }: Props) {
   const checkboxColor = findCheckBoxColor(task);
-  const column: Column | null = task
-    ? columns.find((c) => c.id === (task.columnId || null)) || null
-    : null;
-
-  let project: Project | null = null;
-  if (column) {
-    project = projects.find((p) => p.id === (column.projectId || null)) || null;
-  }
 
   const [taskEditMode, setTaskEditMode] = useState(false);
   const [descriptionEditMode, setDescriptionEditMode] = useState(false);
@@ -68,18 +64,43 @@ export default function TaskModal({
       descriptionInputRef.current.select();
     }
   }, [descriptionEditMode]);
-
+  console.log(parentProject);
   return (
     <div className="absolute left-1/2 top-1/2 z-20 grid h-[700px] w-[800px] -translate-x-1/2 -translate-y-1/2 transform grid-cols-taskModal grid-rows-taskModal rounded-2xl bg-white shadow-2xl">
-      <header className="col-span-full flex h-20 border-collapse items-center border-b-2 px-8 text-[0.8em] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
-        {project ? project.title : "-"}{" "}
+      <header className="col-span-full flex h-20 border-collapse items-center border-b-2 px-8 text-[0.8em] font-light capitalize tracking-[0.23em] text-light-primaryTextLight">
+        {parentTaskList?.length === 0 ? (
+          <button onClick={() => setActiveTask(null)}>
+            {parentProject?.title}
+          </button>
+        ) : (
+          <>
+            {parentProject?.title && (
+              <>
+                <button onClick={() => setActiveTask(null)}>
+                  {parentProject.title}
+                </button>
+                <span className="mx-2">/</span>
+              </>
+            )}
+            {parentTaskList?.map((parent, index) => (
+              <div key={index}>
+                <button onClick={() => setActiveTask(parent)}>
+                  {parent.content}
+                </button>
+                {index < parentTaskList.length - 1 && (
+                  <span className="mx-2">/</span>
+                )}
+              </div>
+            ))}
+          </>
+        )}
       </header>
       <aside className="flex flex-col gap-8 border-r-2 p-5">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-start gap-1">
           <SidebarHeader>Parent</SidebarHeader>
-          <SidebarInfo>{project ? project.title : "-"}</SidebarInfo>
+          <SidebarInfo>{parentProject?.title}</SidebarInfo>
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-start gap-1">
           <SidebarHeader>Due Date</SidebarHeader>
           <SidebarInfo>Today</SidebarInfo>
         </div>
@@ -94,7 +115,6 @@ export default function TaskModal({
           deleteLabelInTask={deleteLabelInTask}
         />
       </aside>
-
       <div className="px-10">
         <div
           onClick={() => setTaskEditMode(true)}

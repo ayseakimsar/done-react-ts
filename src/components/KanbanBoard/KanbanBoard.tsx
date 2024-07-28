@@ -33,9 +33,13 @@ interface Props {
   updateTaskPriority: (taskId: Id, priority: string) => void;
   updateTaskLabels: (taskId: Id, labelId: Id) => void;
   deleteLabelInTask: (taskId: Id, labelId: Id) => void;
+  parentProject: Project | undefined;
+  parentTaskList: Task[] | undefined;
 }
 
 export default function KanbanBoard({
+  parentProject,
+  parentTaskList,
   activeProject,
   activeLabel,
   labels,
@@ -351,6 +355,9 @@ export default function KanbanBoard({
                 className="fixed left-0 top-0 z-10 h-screen w-screen bg-dark-mainBackground opacity-50"
               />
               <TaskModal
+                setActiveTask={setActiveTask}
+                parentProject={parentProject}
+                parentTaskList={parentTaskList}
                 labels={labels}
                 deleteLabelInTask={deleteLabelInTask}
                 projects={projects}

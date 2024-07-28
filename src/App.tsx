@@ -29,6 +29,52 @@ function App() {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
 
+  function getParentTaskList() {
+    if (!activeTask) return;
+    const parentTaskList: Task[] = [];
+
+    let currentParentId = activeTask?.parentTaskId;
+
+    function findTaskById(taskId: Id): Task | undefined {
+      return tasks.find((task) => task.id === taskId);
+    }
+
+    while (currentParentId !== null) {
+      const parentTask = findTaskById(currentParentId);
+      if (parentTask) {
+        parentTaskList.push(parentTask);
+        currentParentId = parentTask.parentTaskId;
+      } else {
+        break;
+      }
+    }
+
+    return parentTaskList.reverse();
+  }
+
+  const parentTaskList = getParentTaskList();
+  if (activeTask) parentTaskList?.push(activeTask);
+  function getProjectIdTaskBelongTo() {
+    // it takes the last element of the list (which is grandgrand...grandparent task) it takes the project from it
+    // so you can see which folder/prject it lays on
+    if (parentTaskList?.length !== 0) {
+      return columns.find(
+        (column) => column.id === parentTaskList?.[0]?.columnId,
+      )?.projectId;
+    } else
+      return columns.find((column) => column.id === activeTask?.columnId)
+        ?.projectId;
+  }
+
+  const projectIdTaskBelongTo = getProjectIdTaskBelongTo();
+
+  function findParentProjectById() {
+    if (activeTask)
+      return projects.find((project) => project.id === projectIdTaskBelongTo);
+  }
+
+  const parentProject: Project | undefined = findParentProjectById();
+
   function createNewProject() {
     console.log(projects);
     const newProject = {
@@ -181,6 +227,8 @@ function App() {
         updateLabelTitle={updateLabelTitle}
       />
       <KanbanBoard
+        parentProject={parentProject}
+        parentTaskList={parentTaskList}
         activeLabel={activeLabel}
         activeProject={activeProject}
         labels={labels}

@@ -6,7 +6,7 @@ interface Props {
 
 export default function SidebarHeader({ children }: Props) {
   return (
-    <div className="text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
+    <div className="px-3 text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight">
       {children}
     </div>
   );
