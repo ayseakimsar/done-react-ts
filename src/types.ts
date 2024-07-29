@@ -18,7 +18,7 @@ export type Task = {
   id: Id;
   columnId: Id | null;
   content: string;
-  dueDate: string | null /*  yyyy-mm-dd */;
+  dueDate: Date | null;
   parentTaskId: Id | null;
   labelIds: Id[] | null;
   completed: boolean;

@@ -172,6 +172,17 @@ export default function KanbanBoard({
 
     setTasks(newTasks);
   }
+  function updateTaskDueDate(taskId: Id, date: Date | null) {
+    console.log(date);
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== taskId) return task;
+      else return { ...task, dueDate: date };
+    });
+
+    setTasks(updatedTasks);
+
+    console.log(tasks.find((task) => task.id === taskId));
+  }
   function updateTaskDescription(taskId: Id, content: string) {
     const updatedTasks = tasks.map((task) => {
       if (task.id !== taskId) return task;
@@ -366,6 +377,7 @@ export default function KanbanBoard({
                 createSubTask={createSubTask}
                 deleteTask={deleteTask}
                 updateTask={updateTask}
+                updateTaskDueDate={updateTaskDueDate}
                 updateTaskDescription={updateTaskDescription}
                 completeTask={completeTask}
                 updateTaskPriority={updateTaskPriority}

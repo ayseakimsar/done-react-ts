@@ -1,0 +1,91 @@
+/* custom-datepicker.css */
+
+.react-datepicker__input-container input {
+  width: 100%;
+}
+
+.react-datepicker__input-container input:focus {
+  outline-width: 0px;
+}
+
+.react-datepicker__month-container {
+  background-color: transparent;
+}
+.react-datepicker-popper {
+  background-color: transparent;
+  transform: translate(0, 223px) !important;
+}
+
+.react-datepicker-popper svg {
+  display: none;
+}
+
+/* General calendar styles */
+.react-datepicker {
+  background-color: #fff; /* Background color */
+  color: #111827; /* Text color */
+  border-radius: 1.5rem; /* Border radius */
+  border: 1px solid #d1d5db; /* Border color */
+  font-family: "Inter";
+  padding: 1rem;
+  box-shadow: 6px 12px 18px -9px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 6px 12px 18px -9px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 6px 12px 18px -9px rgba(0, 0, 0, 0.3);
+}
+
+/* Header styles */
+.react-datepicker__header {
+  background-color: transparent; /* Background color */
+  border-bottom: 1px solid #fff; /* Border color */
+  border-radius: 0.5rem 0.5rem 0 0; /* Header border radius */
+  color: #475569;
+}
+.react-datepicker__navigation {
+  margin-top: 1.5rem;
+}
+
+.react-datepicker__current-month {
+  color: #6c7787;
+  margin-top: 0.5rem;
+}
+
+.react-datepicker__day-name {
+  color: #6c7787;
+  margin-right: 0.45rem;
+  margin-top: 1.5rem;
+  font-weight: 700;
+}
+
+.react-datepicker__week {
+  margin-top: 0.2rem;
+}
+
+/* Day styles */
+.react-datepicker__day {
+  color: #6c7787; /* Text color */
+  border-radius: 0.25rem; /* Border radius */
+  height: 2rem;
+  width: 2rem;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e8f3ff; /* Hover background color */
+  border-radius: 100%;
+  color: #6c7787;
+  transition: all 0.3s;
+}
+
+/* Selected day styles */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #93c5fd; /* Selected background color */
+  color: #ffffff; /* Selected text color */
+  border-radius: 100%;
+}
+
+/* Today day styles */
+.react-datepicker__day--today {
+  background-color: #e5e7eb; /* Today background color */
+  color: #6c7787; /* Today text color */
+  border-radius: 100%;
+}

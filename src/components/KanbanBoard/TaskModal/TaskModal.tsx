@@ -1,14 +1,20 @@
+import { useEffect, useRef, useState } from "react";
+import { Column, Id, Label, Project, Task } from "../../../types";
+import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
+import "react-datepicker/dist/react-datepicker.css";
+import "./custom-datepicker.css";
+import DatePicker from "react-datepicker";
 import Checkbox from "../../../icons/KanbanBoard/Checkbox";
 import DescriptionIcon from "../../../icons/KanbanBoard/DescriptionIcon";
-import { Column, Id, Label, Project, Task } from "../../../types";
 import SidebarHeader from "./SidebarHeader";
 import SidebarInfo from "./SidebarInfo";
 import SubtaskContainer from "./SubtaskContainer";
 import PlusIcon from "../../../icons/KanbanBoard/PlusIcon";
-import { useEffect, useRef, useState } from "react";
-import { findCheckBoxColor } from "../../../utils/findCheckboxColor";
 import PriorityBox from "./PriorityBox";
 import LabelBox from "./LabelBox";
+import CalendarIcon from "../../../icons/KanbanBoard/CalendarIcon";
+import DeleteIcon from "../../../icons/KanbanBoard/DeleteIcon";
+
 interface Props {
   labels: Label[];
   columns: Column[];
@@ -20,6 +26,7 @@ interface Props {
   createSubTask: (taskId: Id) => void;
   deleteTask: (taskId: Id) => void;
   updateTask: (taskId: Id, content: string) => void;
+  updateTaskDueDate: (taskId: Id, date: Date | null) => void;
   updateTaskDescription: (taskId: Id, content: string) => void;
   handleTaskClick: (task: Task) => void;
   completeTask: (taskId: Id) => void;
@@ -35,6 +42,7 @@ export default function TaskModal({
   labels,
   parentProject,
   parentTaskList,
+  updateTaskDueDate,
   createSubTask,
   deleteTask,
   updateTask,
@@ -47,11 +55,53 @@ export default function TaskModal({
   setActiveTask,
 }: Props) {
   const checkboxColor = findCheckBoxColor(task);
-
   const [taskEditMode, setTaskEditMode] = useState(false);
   const [descriptionEditMode, setDescriptionEditMode] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const taskInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
+  const datePickerRef = useRef(null);
+
+  const handleDueDateClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.setOpen(true); // This will open the DatePicker popper
+    }
+    setIsDatePickerOpen(!isDatePickerOpen);
+  };
+
+  function checkPast(date: Date | null) {
+    if (date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set today's time to midnight for accurate comparison
+      return date < today;
+    }
+    return false;
+  }
+  function checkToday(date: Date | null) {
+    if (date) {
+      const today = new Date();
+
+      return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate()
+      );
+    }
+  }
+
+  function checkTomorrow(date: Date | null) {
+    if (date) {
+      const today = new Date();
+      return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate() + 1
+      );
+    }
+  }
+  const isPast = checkPast(task.dueDate);
+  const isToday = checkToday(task?.dueDate);
+  const isTomorrow = checkTomorrow(task.dueDate);
 
   useEffect(() => {
     if (taskEditMode && taskInputRef.current) {
@@ -64,7 +114,6 @@ export default function TaskModal({
       descriptionInputRef.current.select();
     }
   }, [descriptionEditMode]);
-  console.log(parentProject);
   return (
     <div className="absolute left-1/2 top-1/2 z-20 grid h-[700px] w-[800px] -translate-x-1/2 -translate-y-1/2 transform grid-cols-taskModal grid-rows-taskModal rounded-2xl bg-white shadow-2xl">
       <header className="col-span-full flex h-20 border-collapse items-center border-b-2 px-8 text-[0.8em] font-light capitalize tracking-[0.23em] text-light-primaryTextLight">
@@ -97,17 +146,59 @@ export default function TaskModal({
       </header>
       <aside className="flex flex-col gap-8 border-r-2 p-5">
         <div className="flex flex-col items-start gap-1">
-          <SidebarHeader>Parent</SidebarHeader>
+          <SidebarHeader>Project</SidebarHeader>
           <SidebarInfo>{parentProject?.title}</SidebarInfo>
         </div>
         <div className="flex flex-col items-start gap-1">
-          <SidebarHeader>Due Date</SidebarHeader>
-          <SidebarInfo>Today</SidebarInfo>
+          <div
+            className="cursor-pointer px-3 text-[10px] font-light uppercase tracking-[0.23em] text-light-primaryTextLight"
+            onClick={() => handleDueDateClick()}
+          >
+            Due Date
+          </div>
+          <div>
+            <SidebarInfo>
+              <div
+                className="flex w-36 items-center gap-2"
+                onClick={() => handleDueDateClick()}
+              >
+                <div>
+                  <CalendarIcon
+                    color={
+                      isPast
+                        ? "#f87171"
+                        : isToday
+                          ? "#0d9488"
+                          : isTomorrow
+                            ? "#d97706"
+                            : "currentColor"
+                    }
+                  />
+                </div>
+
+                <DatePicker
+                  ref={datePickerRef}
+                  selected={task.dueDate}
+                  onChange={(date: Date) => updateTaskDueDate(task.id, date)}
+                  className="bg-white text-light-primaryText"
+                  dateFormat="dd MMM"
+                  value={
+                    isToday ? "Today" : isTomorrow ? "Tomorrow" : task.dueDate
+                  }
+                />
+                <div
+                  className={task.dueDate ? "opacity-1" : "opacity-0"}
+                  onClick={() => updateTaskDueDate(task.id, null)}
+                >
+                  <DeleteIcon size={4} />
+                </div>
+              </div>
+            </SidebarInfo>
+          </div>
         </div>
         <div className="flex flex-col gap-1">
           <PriorityBox task={task} updateTaskPriority={updateTaskPriority} />
         </div>
-
         <LabelBox
           task={task}
           labels={labels}

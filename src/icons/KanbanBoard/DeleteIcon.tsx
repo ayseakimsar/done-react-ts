@@ -1,12 +1,16 @@
-export default function RemoveLabelIcon() {
+interface Props {
+  size: number;
+}
+
+export default function RemoveLabelIcon({ size = 4 }: Props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth={2}
-      stroke="currentColor"
-      className="size-4"
+      stroke="#9199a5"
+      className={`size-${size}`}
     >
       <path
         strokeLinecap="round"
