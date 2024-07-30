@@ -76,11 +76,19 @@
 }
 
 /* Selected day styles */
-.react-datepicker__day--selected,
-.react-datepicker__day--keyboard-selected {
+.react-datepicker__day--selected {
   background-color: #93c5fd; /* Selected background color */
   color: #ffffff; /* Selected text color */
   border-radius: 100%;
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: #93c5fd;
+  color: #ffffff; /* Selected text color */
+}
+.react-datepicker__day--keyboard-selected {
+  background-color: transparent;
+  color: #6c7787;
 }
 
 /* Today day styles */
@@ -88,4 +96,8 @@
   background-color: #e5e7eb; /* Today background color */
   color: #6c7787; /* Today text color */
   border-radius: 100%;
+}
+
+.react-datepicker__day--disabled {
+  color: #cecece !important;
 }

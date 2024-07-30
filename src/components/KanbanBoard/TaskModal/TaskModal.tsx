@@ -57,17 +57,19 @@ export default function TaskModal({
   const checkboxColor = findCheckBoxColor(task);
   const [taskEditMode, setTaskEditMode] = useState(false);
   const [descriptionEditMode, setDescriptionEditMode] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const taskInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLInputElement>(null);
   const datePickerRef = useRef(null);
 
   const handleDueDateClick = () => {
     if (datePickerRef.current) {
-      datePickerRef.current.setOpen(true); // This will open the DatePicker popper
+      datePickerRef.current?.setOpen(true); // This will open the DatePicker popper
     }
-    setIsDatePickerOpen(!isDatePickerOpen);
   };
+
+  function dayClassName(date) {
+    return date < new Date() ? "past-day" : undefined;
+  }
 
   function checkPast(date: Date | null) {
     if (date) {
@@ -162,7 +164,7 @@ export default function TaskModal({
                 className="flex w-36 items-center gap-2"
                 onClick={() => handleDueDateClick()}
               >
-                <div>
+                <div className={task.dueDate ? "opacity-1" : "opacity-0"}>
                   <CalendarIcon
                     color={
                       isPast
@@ -178,12 +180,20 @@ export default function TaskModal({
 
                 <DatePicker
                   ref={datePickerRef}
+                  minDate={new Date()}
                   selected={task.dueDate}
                   onChange={(date: Date) => updateTaskDueDate(task.id, date)}
                   className="bg-white text-light-primaryText"
                   dateFormat="dd MMM"
+                  dayClassName={dayClassName}
                   value={
-                    isToday ? "Today" : isTomorrow ? "Tomorrow" : task.dueDate
+                    isToday
+                      ? "Today"
+                      : isTomorrow
+                        ? "Tomorrow"
+                        : task.dueDate
+                          ? task.dueDate
+                          : "-"
                   }
                 />
                 <div
