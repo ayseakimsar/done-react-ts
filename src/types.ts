@@ -4,6 +4,7 @@ export type Project = {
   id: Id;
   title: string;
   type: string;
+  color: string;
 };
 
 export type Column = {

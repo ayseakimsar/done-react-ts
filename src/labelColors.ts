@@ -1,5 +1,4 @@
 export const labelColors: string[] = [
-  "#eae4e9",
   "#fff1e6",
   "#fde2e4",
   "#fad2e1",

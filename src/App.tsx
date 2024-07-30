@@ -25,9 +25,12 @@ function App() {
     id: "inbox",
     title: "Inbox",
     type: "main-filter",
+    color: "",
   });
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
+
+  console.log(activeLabel?.color);
 
   function getParentTaskList() {
     if (!activeTask) return;
@@ -76,11 +79,11 @@ function App() {
   const parentProject: Project | undefined = findParentProjectById();
 
   function createNewProject() {
-    console.log(projects);
-    const newProject = {
+    const newProject: Project = {
       id: generateId(),
       title: `Project ${projects.length - 2}`,
       type: "project",
+      color: "",
     };
     const todoColumn = {
       id: generateId(),
@@ -130,6 +133,16 @@ function App() {
     const updatedLabels = labels.map((label) => {
       if (label.id !== labelId) return label;
       return { ...label, title: newTitle };
+    });
+
+    setLabels(updatedLabels);
+  }
+
+  function updateLabelColor(labelId: Id, color: string) {
+    console.log(color);
+    const updatedLabels = labels.map((label) => {
+      if (label.id !== labelId) return label;
+      return { ...label, color: color };
     });
 
     setLabels(updatedLabels);
@@ -225,6 +238,7 @@ function App() {
         labels={labels}
         updateProjectTitle={updateProjectTitle}
         updateLabelTitle={updateLabelTitle}
+        updateLabelColor={updateLabelColor}
       />
       <KanbanBoard
         parentProject={parentProject}

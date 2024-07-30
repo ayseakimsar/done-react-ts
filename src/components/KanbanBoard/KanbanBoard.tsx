@@ -114,7 +114,6 @@ export default function KanbanBoard({
     };
     setColumns([...columns, columnToAdd]);
   }
-
   function updateColumn(columnId: Id, title: string) {
     const updatedColumns = columns.map((column) => {
       if (column.id !== columnId) {
@@ -124,14 +123,12 @@ export default function KanbanBoard({
 
     setColumns(updatedColumns);
   }
-
   function deleteColumn(columnId: Id) {
     const newColumns = columns.filter((col) => col.id !== columnId);
     setColumns(newColumns);
     const newTasks = tasks.filter((task) => task.columnId !== columnId);
     setTasks(newTasks);
   }
-
   function createTask(columnId: Id, labelId: Id | null = null) {
     const newTask: Task = {
       id: generateId(),
@@ -146,7 +143,6 @@ export default function KanbanBoard({
     };
     setTasks([...tasks, newTask]);
   }
-
   function createSubTask(taskId: Id) {
     const newSubTask: Task = {
       id: generateId(),
@@ -162,7 +158,6 @@ export default function KanbanBoard({
 
     setTasks([...tasks, newSubTask]);
   }
-
   function updateTask(taskId: Id, content: string) {
     const newTasks = tasks.map((task) => {
       if (task.id !== taskId) {
@@ -180,8 +175,6 @@ export default function KanbanBoard({
     });
 
     setTasks(updatedTasks);
-
-    console.log(tasks.find((task) => task.id === taskId));
   }
   function updateTaskDescription(taskId: Id, content: string) {
     const updatedTasks = tasks.map((task) => {
@@ -191,12 +184,10 @@ export default function KanbanBoard({
 
     setTasks(updatedTasks);
   }
-
   function deleteTask(taskId: Id) {
     const newTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(newTasks);
   }
-
   function completeTask(taskId: Id) {
     const newTasks: Task[] = tasks.map((task) => {
       if (task.id !== taskId) return task;
@@ -207,11 +198,9 @@ export default function KanbanBoard({
     });
     setTasks(newTasks);
   }
-
   function handleTaskClick(task: Task) {
     setActiveTask(task);
   }
-
   function onDragStart(event: DragStartEvent) {
     setColumnOnDrag(null);
     setTaskOnDrag(null);
@@ -223,7 +212,6 @@ export default function KanbanBoard({
       setTaskOnDrag(event.active.data.current?.task);
     }
   }
-
   function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
@@ -236,7 +224,6 @@ export default function KanbanBoard({
     if (active.data.current?.type === "Task") return;
     setColumns(arrayMove(columns, activeIndex, overIndex));
   }
-
   function onDragOver(event: DragOverEvent) {
     const { active, over } = event;
     if (!over) return;

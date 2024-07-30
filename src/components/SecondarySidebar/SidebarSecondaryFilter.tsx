@@ -10,6 +10,7 @@ interface Props {
   handleFilterSelection: (filter: Project | Label) => void;
   updateLabelTitle: (labelId: Id, newTitle: string) => void;
   updateProjectTitle: (projectId: Id, newTitle: string) => void;
+  updateLabelColor: (labelId: Id, color: string) => void;
   deleteProject: (projectId: Id) => void;
   deleteLabel: (labelId: Id) => void;
 }
@@ -18,6 +19,7 @@ export default function SidebarProjectFilter({
   filter,
   handleFilterSelection,
   updateLabelTitle,
+  updateLabelColor,
   updateProjectTitle,
   deleteProject,
   deleteLabel,
@@ -26,6 +28,7 @@ export default function SidebarProjectFilter({
   const [isFilterHovered, setIsFilterHovered] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const colorPickerRef = useRef(null);
 
   useEffect(() => {
     if (editMode && inputRef.current) {
@@ -33,15 +36,36 @@ export default function SidebarProjectFilter({
     }
   }, [editMode]);
 
+  function handleLabelIconClick(event: React.ChangeEvent<HTMLInputElement>) {
+    event.stopPropagation();
+    setIsColorPickerOpen(!isColorPickerOpen);
+  }
+  function handleLabelColorSelection(col: string) {
+    updateLabelColor(filter.id, col);
+    setIsColorPickerOpen(false);
+  }
   function handleTitleUpdate(title: string) {
     if (filter.type === "label") updateLabelTitle(filter.id, title);
     if (filter.type === "project") updateProjectTitle(filter.id, title);
   }
-
   function handleDelete() {
     if (filter.type === "project") deleteProject(filter.id);
     if (filter.type === "label") deleteLabel(filter.id);
   }
+  function handleClickOutsideColorPicker(e) {
+    if (colorPickerRef.current && !colorPickerRef.current.contains(e.target)) {
+      setIsColorPickerOpen(false);
+    }
+  }
+  useEffect(() => {
+    // Attach the event listener when the component is mounted
+    document.addEventListener("mousedown", handleClickOutsideColorPicker);
+
+    // Clean up the event listener when the component is unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideColorPicker);
+    };
+  }, []);
 
   return (
     <button
@@ -50,25 +74,36 @@ export default function SidebarProjectFilter({
       onMouseEnter={() => setIsFilterHovered(true)}
       onMouseLeave={() => setIsFilterHovered(false)}
     >
-      <div className="flex h-10 items-center justify-between px-3 pl-7 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
-        <div className="flex items-center gap-2">
+      <div className="flex h-10 items-center justify-between pl-7 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
+        <div
+          className="flex h-[1.9rem] w-40 items-center gap-2 rounded-xl px-3"
+          style={{ backgroundColor: filter.color }}
+        >
           <div
             role="button"
             tabIndex={0}
-            className=""
-            onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
-            onBlur={() => setIsColorPickerOpen(false)}
+            className="flex h-7 w-10 items-center justify-center rounded-xl duration-300 hover:bg-[#00000012]"
+            onClick={(e) => handleLabelIconClick(e)}
           >
             {filter.type === "project" ? <ProjectIcon /> : <LabelIcon />}
           </div>
-          {isColorPickerOpen && (
-            <ul className="bg- menu dropdown-content absolute w-52 rounded-box bg-[#458239] p-2 shadow">
-              {labelColors.map((col) => (
-                <li role="button" className={`h-3 w-3 bg-[#326]`}></li>
-              ))}{" "}
-            </ul>
-          )}
-
+          <div
+            className="relative left-[-2rem] top-[1rem]"
+            ref={colorPickerRef}
+          >
+            {isColorPickerOpen && (
+              <div className="menu dropdown-content absolute z-10 grid grid-cols-3 gap-4 rounded-xl bg-[#fff] p-3 shadow">
+                {labelColors.map((col) => (
+                  <div
+                    onClick={() => handleLabelColorSelection(col)}
+                    role="button"
+                    className="h-3 w-3 justify-self-center rounded-full transition-all hover:shadow-md"
+                    style={{ backgroundColor: col }}
+                  ></div>
+                ))}{" "}
+              </div>
+            )}
+          </div>
           <div
             className="w-[130px] text-start"
             onDoubleClick={() => setEditMode(true)}
@@ -89,11 +124,11 @@ export default function SidebarProjectFilter({
             ) : filter.title === "" ? (
               <div>&nbsp;</div> // nonbreakable space, it is for the div not to be empty, in case new title is empty.
             ) : (
-              filter.title
+              <div>{filter.title}</div>
             )}
           </div>
         </div>
-
+        {/* Delete Button */}
         <div
           className={`flex gap-1 ${isFilterHovered ? "opacity-100" : "opacity-0"} transition-all duration-100 ease-linear`}
           onClick={() => handleDelete()}

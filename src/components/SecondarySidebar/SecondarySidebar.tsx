@@ -15,6 +15,7 @@ interface Props {
   projects: Project[];
   labels: Label[];
   updateLabelTitle: (labelId: Id, newTitle: string) => void;
+  updateLabelColor: (labelId: Id, color: string) => void;
   updateProjectTitle: (projectId: Id, newTitle: string) => void;
   deleteProject: (projectId: Id) => void;
   deleteLabel: (labelId: Id) => void;
@@ -26,9 +27,11 @@ export default function SecondarySidebar({
   createNewProject,
   createNewLabel,
   updateLabelTitle,
+  updateLabelColor,
   updateProjectTitle,
   deleteProject,
   deleteLabel,
+
   projects,
   labels,
 }: Props) {
@@ -74,6 +77,7 @@ export default function SecondarySidebar({
                   updateProjectTitle={updateProjectTitle}
                   deleteProject={deleteProject}
                   deleteLabel={deleteLabel}
+                  updateLabelColor={updateLabelColor}
                 />
               )
             );
@@ -98,6 +102,7 @@ export default function SecondarySidebar({
                 filter={label}
                 handleFilterSelection={handleLabelSelection}
                 updateLabelTitle={updateLabelTitle}
+                updateLabelColor={updateLabelColor}
                 updateProjectTitle={updateProjectTitle}
                 deleteProject={deleteProject}
                 deleteLabel={deleteLabel}
