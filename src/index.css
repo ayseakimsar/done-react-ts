@@ -23,3 +23,14 @@
 button {
   cursor: pointer;
 }
+
+html {
+  font-size: 95%;
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+body {
+  height: 100vh;
+  overflow-y: hidden;
+}

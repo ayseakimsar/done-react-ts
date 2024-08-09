@@ -30,8 +30,6 @@ function App() {
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
 
-  console.log(activeLabel?.color);
-
   function getParentTaskList() {
     if (!activeTask) return;
     const parentTaskList: Task[] = [];
@@ -139,7 +137,6 @@ function App() {
   }
 
   function updateLabelColor(labelId: Id, color: string) {
-    console.log(color);
     const updatedLabels = labels.map((label) => {
       if (label.id !== labelId) return label;
       return { ...label, color: color };
@@ -172,7 +169,6 @@ function App() {
   function deleteLabel(labelId: Id) {
     const updatedLabels = labels.filter((label) => label.id !== labelId);
     setLabels(updatedLabels);
-    console.log("a label is deleted!");
   }
 
   function handleProjectSelection(project: Project) {
@@ -223,6 +219,29 @@ function App() {
     setTasks(updatedTasks);
   }
 
+  // filters todays tasks
+  const todayTasks: Task[] = [];
+
+  function getTodayTasks(task: Task) {
+    if (!task.dueDate) return;
+    const today = new Date();
+    const taskDate = new Date(task?.dueDate);
+    if (
+      taskDate.getFullYear() === today.getFullYear() &&
+      taskDate.getMonth() === today.getMonth() &&
+      taskDate.getDate() === today.getDate()
+    )
+      todayTasks.push(task);
+  }
+
+  tasks.forEach((task) => {
+    getTodayTasks(task);
+  });
+
+  // filters todays tasks
+
+  console.log(tasks);
+
   return (
     <div className="grid-kanban-board h-[100vh]">
       <Topbar activeProject={activeProject} activeLabel={activeLabel} />
@@ -261,6 +280,7 @@ function App() {
             ? tasks.filter((task) => task.labelIds?.includes(activeLabel.id))
             : null
         }
+        todayTasks={todayTasks}
       />
     </div>
   );

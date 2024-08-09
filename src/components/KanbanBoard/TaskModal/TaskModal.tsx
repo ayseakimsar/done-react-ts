@@ -67,7 +67,12 @@ export default function TaskModal({
     }
   };
 
-  function dayClassName(date) {
+  function handleCompleteTask(taskId: Id) {
+    completeTask(taskId);
+    setActiveTask(null);
+  }
+
+  function dayClassName(date: Date) {
     return date < new Date() ? "past-day" : undefined;
   }
 
@@ -225,7 +230,7 @@ export default function TaskModal({
           }}
           className="mt-7 flex items-center gap-3"
         >
-          <div className="h-10" onClick={() => completeTask(task.id)}>
+          <div className="h-10" onClick={() => handleCompleteTask(task.id)}>
             <Checkbox color={checkboxColor} />
           </div>
           <div className="h-10">

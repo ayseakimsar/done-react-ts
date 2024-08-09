@@ -19,7 +19,7 @@ export default {
       backgroundColor: {
         light: {
           brand: "#93C5FD",
-          mainBackground: "#F1F4F6",
+          mainBackground: "#f7f8fa",
           mainSidebar: "#E8F3FF",
           secondarySidebar: "#fff",
           task: "#fff",

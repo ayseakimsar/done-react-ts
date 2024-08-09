@@ -118,7 +118,7 @@ export default function SidebarProjectFilter({
                 value={filter.title}
                 placeholder=""
                 ref={inputRef}
-                className="text-md input input-sm input-bordered w-full max-w-xs bg-light-mainSidebar font-semibold tracking-wide text-light-primaryTextLight"
+                className="text-md b input input-sm h-6 bg-transparent font-semibold tracking-wide text-light-primaryTextLight focus:border-none focus:outline-none"
                 onChange={(e) => handleTitleUpdate(e.target.value)}
               />
             ) : filter.title === "" ? (

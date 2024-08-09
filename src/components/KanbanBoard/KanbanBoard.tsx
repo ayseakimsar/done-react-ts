@@ -35,6 +35,7 @@ interface Props {
   deleteLabelInTask: (taskId: Id, labelId: Id) => void;
   parentProject: Project | undefined;
   parentTaskList: Task[] | undefined;
+  todayTasks: Task[] | null | undefined;
 }
 
 export default function KanbanBoard({
@@ -52,10 +53,11 @@ export default function KanbanBoard({
   setActiveTask,
   updateTaskPriority,
   updateTaskLabels,
-
   labeledTasks,
   deleteLabelInTask,
+  todayTasks,
 }: Props) {
+  console.log(activeProject);
   const [columnOnDrag, setColumnOnDrag] = useState<Column | null>();
   const [taskOnDrag, setTaskOnDrag] = useState<Task | null>();
 
@@ -72,19 +74,29 @@ export default function KanbanBoard({
       },
     }),
   );
+
   const filteredColumnsByProject = activeProject?.id
     ? columns.filter((col) => col.projectId === activeProject?.id)
     : columns;
 
-  const filteredColumnsByFilter = activeLabel?.id
+  const filteredColumnsByLabel = activeLabel?.id
     ? columns.filter((col) => col.labelId === activeLabel.id)
     : columns;
 
-  const filteredColumns = activeProject
-    ? filteredColumnsByProject
-    : activeLabel
-      ? filteredColumnsByFilter
+  const filteredColumnsByToday =
+    activeProject?.id === "today"
+      ? columns.filter((col) => col.projectId === activeProject?.id)
       : columns;
+
+  const filteredColumns = activeProject
+    ? activeProject.id === "today"
+      ? filteredColumnsByToday
+      : filteredColumnsByProject
+    : activeLabel
+      ? filteredColumnsByLabel
+      : columns;
+
+  // filters inbox tasks
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -129,18 +141,23 @@ export default function KanbanBoard({
     const newTasks = tasks.filter((task) => task.columnId !== columnId);
     setTasks(newTasks);
   }
-  function createTask(columnId: Id, labelId: Id | null = null) {
+  function createTask(
+    columnId: Id,
+    labelId: Id | null = null,
+    dueDate: Date | null,
+  ) {
     const newTask: Task = {
       id: generateId(),
       columnId: columnId,
       content: `Task ${tasks.length + 1}`,
-      dueDate: null,
+      dueDate: dueDate ? dueDate : null,
       labelIds: labelId ? [labelId] : null,
       parentTaskId: null,
       completed: false,
       priority: "none",
       description: "",
     };
+    console.log(dueDate);
     setTasks([...tasks, newTask]);
   }
   function createSubTask(taskId: Id) {
@@ -185,7 +202,18 @@ export default function KanbanBoard({
     setTasks(updatedTasks);
   }
   function deleteTask(taskId: Id) {
-    const newTasks = tasks.filter((task) => task.id !== taskId);
+    const subtaskList = tasks.filter((task) => task.parentTaskId === taskId);
+    let newTasks;
+    if (subtaskList.length === 0) {
+      newTasks = tasks.filter((task) => task.id !== taskId);
+    } else {
+      const subtaskIdList = subtaskList.map((task) => task.id);
+      console.log(taskId);
+      console.log(subtaskIdList);
+      subtaskIdList.push(taskId);
+      console.log(subtaskIdList);
+      newTasks = tasks.filter((task) => !subtaskIdList.includes(task.id));
+    }
     setTasks(newTasks);
   }
   function completeTask(taskId: Id) {
@@ -263,7 +291,7 @@ export default function KanbanBoard({
   }
 
   return (
-    <div className="ml-10 flex h-[100vh] gap-10 overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground">
+    <div className="ml-14 flex h-[100vh] gap-10 overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground">
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
@@ -274,6 +302,7 @@ export default function KanbanBoard({
           <SortableContext items={columnsId}>
             {filteredColumns.map((column) => (
               <ColumnContainer
+                activeProject={activeProject}
                 key={column.id}
                 column={column}
                 completeTask={completeTask}
@@ -286,7 +315,9 @@ export default function KanbanBoard({
                 tasks={
                   activeLabel && labeledTasks
                     ? labeledTasks
-                    : tasks.filter((task) => task.columnId === column.id)
+                    : activeProject?.id === " today" && todayTasks
+                      ? todayTasks
+                      : tasks.filter((task) => task.columnId === column.id)
                 }
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
@@ -313,6 +344,7 @@ export default function KanbanBoard({
                 tasksId={tasksId}
                 onTaskClick={handleTaskClick}
                 activeLabel={activeLabel}
+                activeProject={activeProject}
               />
             )}
 
@@ -331,14 +363,17 @@ export default function KanbanBoard({
         )}
       </DndContext>
       {/* New Column Button */}
-      {!activeLabel && (
-        <button
-          className="mt-[70px] h-[80%] w-[200px] rounded-xl bg-light-task text-3xl text-light-primaryTextLightest shadow-md transition duration-[300ms] hover:shadow-2xl dark:bg-dark-task"
-          onClick={() => createNewColumn()}
-        >
-          + New column
-        </button>
-      )}
+      {!activeLabel &&
+        activeProject?.id !== "today" &&
+        activeProject?.id !== "upcoming" && (
+          <button
+            className="mt-[0.8rem] flex h-[3rem] min-w-[14rem] items-center justify-center gap-3 rounded-xl bg-slate-300 p-4 text-[13px] font-semibold uppercase tracking-[0.2em] text-light-primaryText shadow-sm transition duration-[300ms] hover:shadow-md dark:bg-dark-task"
+            onClick={() => createNewColumn()}
+          >
+            <div className="h-3 w-3 rounded-full bg-white shadow-md"></div>NEW
+            COLUMN
+          </button>
+        )}
       {/* New Column Button */}
 
       {/* Task Modal */}
@@ -379,6 +414,13 @@ export default function KanbanBoard({
           )}
       </div>
       {/* Task Modal */}
+
+      {activeProject?.id === "today" && todayTasks?.length === 0 && (
+        <div className="absolute left-[43rem] top-48 flex w-[30rem] flex-col items-center">
+          {/* <img src={todayFolderImage} /> */}
+          <div className="text-sm font-bold text-light-primaryTextDark"></div>
+        </div>
+      )}
     </div>
   );
 }
