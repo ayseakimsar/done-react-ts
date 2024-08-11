@@ -8,6 +8,7 @@ import PlusIcon from "../../icons/KanbanBoard/PlusIcon";
 import TaskCard from "./TaskCard";
 
 interface Props {
+  view: string;
   column: Column;
   tasks: Task[];
   tasksId: Id[];
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export default function ColumnContainer({
+  view,
   column,
   tasks,
   tasksId,
@@ -66,9 +68,6 @@ export default function ColumnContainer({
     transform: CSS.Transform.toString(transform),
   };
 
-  console.log(todayDate);
-  console.log(activeProject);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleMouseEntersColumn() {
@@ -94,7 +93,7 @@ export default function ColumnContainer({
       <div
         ref={setNodeRef}
         style={style}
-        className="h-[80vh] w-[300px] rounded-xl bg-slate-200"
+        className={`h-auto max-h-[90vh] min-h-[30rem] w-[23rem] rounded-xl bg-slate-200 ${view === "list" ? "min-h-[10rem] w-[50rem]" : ""}`}
       />
     );
   }
@@ -105,58 +104,63 @@ export default function ColumnContainer({
       onMouseLeave={handleMouseLeavesColumn}
       ref={setNodeRef}
       style={style}
-      className={`flex h-[92vh] w-[23rem] flex-col items-start`}
+      className={`flex h-auto max-h-[90vh] min-h-[30rem] w-[23rem] flex-col items-start rounded-xl bg-light-mainBackground p-3 ${view === "list" ? "min-h-[10rem] w-[50rem]" : ""}`}
     >
       {/* Column Title */}
-      {!activeLabel && activeProject?.id !== "today" && (
-        <div className="mt-6 flex h-10 w-[20rem] items-center justify-between text-[#596678] dark:text-slate-200">
-          <div
-            className="cursor-grab text-[13px] font-semibold uppercase tracking-[0.2em]"
-            {...attributes}
-            {...listeners}
-          >
-            {
-              <div className="flex items-center gap-3">
-                <CircleIcon color={column.color} />
-                <div
-                  onClick={() => setColumnEditMode(true)}
-                  onBlur={handleBlur}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && columnEditMode === true)
-                      handleBlur();
-                  }}
-                >
-                  {columnEditMode ? (
-                    <input
-                      className="h-10 w-full rounded-md border border-gray-300 bg-slate-50 p-1 text-[13px] font-semibold uppercase tracking-[0.2em] text-light-primaryText focus:border-slate-300 focus:outline-none dark:text-dark-primaryText"
-                      ref={inputRef}
-                      value={column.title}
-                      onChange={(e) => updateColumn(column.id, e.target?.value)}
-                    />
-                  ) : (
-                    <div>{column.title}</div>
-                  )}
-                </div>
+      <div
+        className={`mt-6 flex h-10 w-[20rem] items-center justify-between text-[#596678] dark:text-slate-200 ${view === "list" ? "w-[50rem]" : ""}`}
+      >
+        <div
+          className="cursor-grab text-[13px] font-semibold uppercase tracking-[0.2em]"
+          {...attributes}
+          {...listeners}
+        >
+          {
+            <div className="flex items-center gap-3">
+              {view !== "list" && (
+                <CircleIcon
+                  color={activeLabel ? activeLabel.color : column.color}
+                />
+              )}
+              <div
+                onClick={() => setColumnEditMode(true)}
+                onBlur={handleBlur}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && columnEditMode === true)
+                    handleBlur();
+                }}
+              >
+                {columnEditMode ? (
+                  <input
+                    className="h-10 w-full rounded-md border border-gray-300 bg-slate-50 p-1 text-[13px] font-semibold uppercase tracking-[0.2em] text-light-primaryText focus:border-slate-300 focus:outline-none dark:text-dark-primaryText"
+                    ref={inputRef}
+                    value={column.title}
+                    onChange={(e) => updateColumn(column.id, e.target?.value)}
+                  />
+                ) : (
+                  <div>{column.title}</div>
+                )}
               </div>
-            }
-          </div>
-          {!activeLabel && (
-            <button
-              onClick={() => deleteColumn(column.id)}
-              className={`transition-all duration-200 ${isColumnHovered ? "opacity-1" : "opacity-0"}`}
-            >
-              <TrashIcon />
-            </button>
-          )}
+            </div>
+          }
         </div>
-      )}
+        {!activeLabel && (
+          <button
+            onClick={() => deleteColumn(column.id)}
+            className={`transition-all duration-200 ${isColumnHovered ? "opacity-1" : "opacity-0"}`}
+          >
+            <TrashIcon />
+          </button>
+        )}
+      </div>
       {/* Column Content */}
-      <div className="mt-8 flex h-[70%] flex-col items-center gap-3 overflow-y-hidden pr-6 hover:overflow-y-auto">
+      <div className="mt-8 flex max-h-[70%] flex-col items-center gap-3 overflow-y-hidden pb-3 pr-6 hover:overflow-y-auto">
         <SortableContext items={tasksId}>
           {tasks.map(
             (task) =>
               !task.completed && (
                 <TaskCard
+                  view={view}
                   key={task.id}
                   task={task}
                   deleteTask={deleteTask}
@@ -171,9 +175,7 @@ export default function ColumnContainer({
       </div>
       {/* Column Footer */}
       <button
-        className={`${
-          isColumnHovered ? `opacity-1` : "opacity-0"
-        } flex-end mt-[30px] flex gap-2 px-5 text-light-primaryText transition-all dark:text-dark-primaryText`}
+        className={`mt-6 flex gap-2 px-5 text-light-primaryText transition-all dark:text-dark-primaryText`}
         onClick={() => createTask(column.id, activeLabel?.id, todayDate)}
       >
         <PlusIcon />

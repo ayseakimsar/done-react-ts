@@ -29,6 +29,7 @@ function App() {
   });
   const [activeTask, setActiveTask] = useState<Task | null>();
   const [activeLabel, setActiveLabel] = useState<Label | null>();
+  const [view, setView] = useState("board");
 
   function getParentTaskList() {
     if (!activeTask) return;
@@ -83,30 +84,7 @@ function App() {
       type: "project",
       color: "",
     };
-    const todoColumn = {
-      id: generateId(),
-      title: `to do`,
-      color: columnColors[7],
-      projectId: newProject.id,
-      labelId: null,
-    };
 
-    const doingColumn = {
-      id: generateId(),
-      title: `doing`,
-      color: columnColors[10],
-      projectId: newProject.id,
-      labelId: null,
-    };
-
-    const doneColumn = {
-      id: generateId(),
-      title: `done`,
-      color: columnColors[5],
-      projectId: newProject.id,
-      labelId: null,
-    };
-    setColumns([...columns, todoColumn, doingColumn, doneColumn]);
     setProjects([...projects, newProject]);
   }
 
@@ -240,11 +218,13 @@ function App() {
 
   // filters todays tasks
 
-  console.log(tasks);
-
   return (
     <div className="grid-kanban-board h-[100vh]">
-      <Topbar activeProject={activeProject} activeLabel={activeLabel} />
+      <Topbar
+        activeProject={activeProject}
+        activeLabel={activeLabel}
+        setView={setView}
+      />
       <MainSidebar />
       <SecondarySidebar
         handleProjectSelection={handleProjectSelection}
@@ -260,6 +240,7 @@ function App() {
         updateLabelColor={updateLabelColor}
       />
       <KanbanBoard
+        view={view}
         parentProject={parentProject}
         parentTaskList={parentTaskList}
         activeLabel={activeLabel}

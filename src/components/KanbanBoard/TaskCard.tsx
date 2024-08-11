@@ -9,6 +9,7 @@ import EditModeIcon from "../../icons/KanbanBoard/EditModeIcon";
 import { findCheckBoxColor } from "../../utils/findCheckboxColor";
 
 interface Props {
+  view: string;
   task: Task;
   subtasks: Task[];
   deleteTask: (taskId: Id) => void;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function TaskCard({
+  view,
   task,
   subtasks,
   deleteTask,
@@ -74,7 +76,7 @@ export default function TaskCard({
         ref={setNodeRef}
         {...attributes}
         {...listeners}
-        className="grid h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText opacity-10 drop-shadow-md dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
+        className={`grid h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText opacity-10 drop-shadow-md dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl`}
         style={style}
       ></div>
     );
@@ -88,7 +90,7 @@ export default function TaskCard({
       {...attributes}
       {...listeners}
       style={style}
-      className="grid h-[auto] min-h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText shadow-md focus:outline-none dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl"
+      className={`grid h-[auto] min-h-[80px] w-[290px] grid-cols-task grid-rows-2 items-center gap-2 rounded-xl bg-light-task px-3 text-light-primaryText shadow-md focus:outline-none dark:bg-dark-task dark:text-dark-primaryText dark:drop-shadow-2xl ${view === "list" ? "max-h-[70px] min-h-[70px] w-[50rem] pt-2" : ""}`}
     >
       <div
         onClick={(e) => {

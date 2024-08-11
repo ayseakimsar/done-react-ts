@@ -19,6 +19,7 @@ import TaskModal from "./TaskModal/TaskModal";
 import { generateColor } from "../../utils/generateColor";
 
 interface Props {
+  view: string;
   activeProject: Project | null;
   labels: Label[];
   projects: Project[];
@@ -39,6 +40,7 @@ interface Props {
 }
 
 export default function KanbanBoard({
+  view,
   parentProject,
   parentTaskList,
   activeProject,
@@ -99,7 +101,7 @@ export default function KanbanBoard({
   // filters inbox tasks
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setActiveTask(null);
       }
@@ -114,7 +116,7 @@ export default function KanbanBoard({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeTask]);
+  }, [activeTask, setActiveTask]);
 
   function createNewColumn(projectId: Id = activeProject?.id || 0) {
     const columnToAdd: Column = {
@@ -219,10 +221,10 @@ export default function KanbanBoard({
   function completeTask(taskId: Id) {
     const newTasks: Task[] = tasks.map((task) => {
       if (task.id !== taskId) return task;
-      if (task.id === taskId && task.completed === true)
+      else if (task.id === taskId && task.completed === true)
         return { ...task, completed: false };
-      if (task.id === taskId && task.completed === false)
-        return { ...task, completed: true };
+      else task.id === taskId && task.completed === false;
+      return { ...task, completed: true };
     });
     setTasks(newTasks);
   }
@@ -263,16 +265,28 @@ export default function KanbanBoard({
     const isOverATask = active.data.current?.type === "Task";
     if (!isActiveATask) return;
     //dropping a task over a task
-
     if (isActiveATask && isOverATask) {
-      setTasks((tasks) => {
+      setTasks((tasks: Task[]): Task[] => {
         const activeIndex = tasks.findIndex(
           (task: Task) => task.id === activeId,
         );
         const overIndex = tasks.findIndex((task: Task) => task.id === overId);
-        if (overIndex === -1) return tasks;
-        tasks[activeIndex].columnId = tasks[overIndex].columnId;
-        const result: Task[] = arrayMove(tasks, activeIndex, overIndex);
+
+        // Ensure both indices are valid
+        if (activeIndex === -1 || overIndex === -1) return tasks;
+
+        // Create a shallow copy to avoid direct mutation
+        const updatedTasks = [...tasks];
+
+        // Update the columnId of the active task
+        updatedTasks[activeIndex] = {
+          ...updatedTasks[activeIndex],
+          columnId: updatedTasks[overIndex].columnId,
+        };
+
+        // Reorder tasks using arrayMove, making sure it returns a valid Task[]
+        const result: Task[] = arrayMove(updatedTasks, activeIndex, overIndex);
+
         return result;
       });
     }
@@ -289,19 +303,24 @@ export default function KanbanBoard({
       setTasks(newTasks);
     }
   }
-
+  console.log(view);
   return (
-    <div className="ml-14 flex h-[100vh] gap-10 overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground">
+    <div
+      className={`ml-14 flex h-[100vh] gap-10 overflow-x-auto bg-light-mainBackground dark:bg-dark-mainBackground ${view === "list" ? "flex-col px-24" : ""}`}
+    >
       <DndContext
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         onDragOver={onDragOver}
       >
-        <div className="flex gap-8">
+        <div
+          className={`flex gap-8 ${view === "list" ? "flex-col gap-0" : ""}`}
+        >
           <SortableContext items={columnsId}>
             {filteredColumns.map((column) => (
               <ColumnContainer
+                view={view}
                 activeProject={activeProject}
                 key={column.id}
                 column={column}
@@ -330,6 +349,7 @@ export default function KanbanBoard({
           <DragOverlay>
             {columnOnDrag && (
               <ColumnContainer
+                view={view}
                 column={columnOnDrag}
                 updateColumn={updateColumn}
                 deleteColumn={deleteColumn}
@@ -350,6 +370,7 @@ export default function KanbanBoard({
 
             {taskOnDrag && (
               <TaskCard
+                view={view}
                 completeTask={completeTask}
                 updateTask={updateTask}
                 task={taskOnDrag}
@@ -367,11 +388,13 @@ export default function KanbanBoard({
         activeProject?.id !== "today" &&
         activeProject?.id !== "upcoming" && (
           <button
-            className="mt-[0.8rem] flex h-[3rem] min-w-[14rem] items-center justify-center gap-3 rounded-xl bg-slate-300 p-4 text-[13px] font-semibold uppercase tracking-[0.2em] text-light-primaryText shadow-sm transition duration-[300ms] hover:shadow-md dark:bg-dark-task"
+            className={`mt-[0.8rem] flex h-[3rem] min-w-[14rem] items-center justify-center gap-3 rounded-xl bg-slate-200 p-4 text-[13px] font-semibold uppercase tracking-[0.2em] text-light-primaryText shadow-sm transition duration-[300ms] hover:shadow-md dark:bg-dark-task ${view === "list" ? "w-[50rem]" : ""}`}
             onClick={() => createNewColumn()}
           >
-            <div className="h-3 w-3 rounded-full bg-white shadow-md"></div>NEW
-            COLUMN
+            {view !== "list" && (
+              <div className="h-3 w-3 rounded-full bg-white shadow-md"></div>
+            )}
+            NEW COLUMN
           </button>
         )}
       {/* New Column Button */}

@@ -100,7 +100,7 @@ export default function SidebarProjectFilter({
                     className="h-3 w-3 justify-self-center rounded-full transition-all hover:shadow-md"
                     style={{ backgroundColor: col }}
                   ></div>
-                ))}{" "}
+                ))}
               </div>
             )}
           </div>
