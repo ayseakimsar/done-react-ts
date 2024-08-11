@@ -74,7 +74,9 @@ export default function SidebarProjectFilter({
       onMouseEnter={() => setIsFilterHovered(true)}
       onMouseLeave={() => setIsFilterHovered(false)}
     >
-      <div className="flex h-10 items-center justify-between pl-7 text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar">
+      <div
+        className={`flex h-10 items-center justify-between ${filter.type === "project" ? "pl-4" : "pl-7"} text-[0.83em] font-semibold tracking-wide text-light-primaryText transition-all duration-300 hover:rounded-r-full hover:bg-light-mainSidebar`}
+      >
         <div
           className="flex h-[1.9rem] w-40 items-center gap-2 rounded-xl px-3"
           style={{ backgroundColor: filter.color }}

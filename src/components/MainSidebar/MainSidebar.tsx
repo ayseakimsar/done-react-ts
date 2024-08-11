@@ -2,8 +2,6 @@ import UserIcon from "../../icons/MainSidebar/UserIcon";
 import ToDoPageIcon from "../../icons/MainSidebar/ToDoPageIcon";
 import HabitPageIcon from "../../icons/MainSidebar/HabitPageIcon";
 import ArchievePageIcon from "../../icons/MainSidebar/ArchievePageIcon";
-import DarkModeButton from "../../icons/MainSidebar/DarkModeButton";
-import HelpIcon from "../../icons/MainSidebar/HelpIcon";
 
 export default function MainSidebar() {
   return (
@@ -13,10 +11,6 @@ export default function MainSidebar() {
         <ToDoPageIcon />
         <HabitPageIcon />
         <ArchievePageIcon />
-      </div>
-      <div className="mt-[20rem] flex flex-col items-center gap-3">
-        <DarkModeButton />
-        <HelpIcon />
       </div>
     </div>
   );

@@ -224,6 +224,7 @@ function App() {
         activeProject={activeProject}
         activeLabel={activeLabel}
         setView={setView}
+        view={view}
       />
       <MainSidebar />
       <SecondarySidebar

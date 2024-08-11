@@ -5,7 +5,7 @@ export default function HabitPageIcon() {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="#627284"
-        className="size-8"
+        className="size-7"
       >
         <path
           fillRule="evenodd"

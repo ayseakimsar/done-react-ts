@@ -1,6 +1,6 @@
 export default function ToDoPageIcon() {
   return (
-    <div className="h-8 w-8">
+    <div className="h-7 w-7">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="ionicon"

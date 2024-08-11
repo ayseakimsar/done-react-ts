@@ -6,7 +6,7 @@ import SidebarMainFilter from "./SidebarMainFilter";
 import SidebarSecondaryFilter from "./SidebarSecondaryFilter";
 import CreateNewFilterButton from "./CreateNewFilterButton";
 import SecondarySidebarHeader from "./SecondarySidebarHeader";
-import Logo from "../../icons/Logo";
+import Logo from "../../icons/SecondarySidebar/Logo";
 interface Props {
   handleProjectSelection: (project: Project) => void;
   handleLabelSelection: (label: Label) => void;
@@ -36,7 +36,7 @@ export default function SecondarySidebar({
   labels,
 }: Props) {
   return (
-    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col border-r-[1px] border-gray-200 bg-light-secondarySidebar pt-[1.5rem]">
+    <div className="col-start-2 col-end-3 row-start-1 row-end-3 flex h-[100vh] w-[230px] flex-col border-r-[1px] border-gray-200 bg-light-secondarySidebar pl-2 pt-[1.5rem]">
       <Logo />
       {/*Main filters*/}
       <div className="mb-14 mt-10 flex flex-col gap-4">
